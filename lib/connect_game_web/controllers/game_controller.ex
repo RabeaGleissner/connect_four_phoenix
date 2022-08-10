@@ -14,15 +14,13 @@ defmodule ConnectGameWeb.GameController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"game" => game_params}) do
+  def create(conn, game_params) do
     case App.create_game(game_params) do
       {:ok, game} ->
         conn
-        |> put_flash(:info, "Game created successfully.")
+        |> put_flash(:info, "Blue begins! Drop a coin.")
         |> redirect(to: Routes.game_path(conn, :show, game))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+      #{:error, %Ecto.Changeset{} = changeset} -> render(conn, "new.html", changeset: changeset)
     end
   end
 
