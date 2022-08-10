@@ -1,0 +1,18 @@
+<h1>Show Move</h1>
+
+<ul>
+
+  <li>
+    <strong>Player:</strong>
+    <%= @move.player %>
+  </li>
+
+  <li>
+    <strong>Coordinates:</strong>
+    <%= @move.coordinates %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.move_path(@conn, :edit, @move) %></span> |
+<span><%= link "Back", to: Routes.move_path(@conn, :index) %></span>

@@ -1,0 +1,28 @@
+<h1>Listing Moves</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Player</th>
+      <th>Coordinates</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for move <- @moves do %>
+    <tr>
+      <td><%= move.player %></td>
+      <td><%= move.coordinates %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.move_path(@conn, :show, move) %></span>
+        <span><%= link "Edit", to: Routes.move_path(@conn, :edit, move) %></span>
+        <span><%= link "Delete", to: Routes.move_path(@conn, :delete, move), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Move", to: Routes.move_path(@conn, :new) %></span>
