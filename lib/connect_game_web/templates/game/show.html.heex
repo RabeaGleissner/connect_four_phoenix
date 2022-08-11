@@ -1,18 +1,11 @@
-<h1>Show Game</h1>
+<div>
+  <h2>Game <%= @game.id %></h2>
+  <p><%= game_state(@game) %></p>
+  <p>
+  <%= if @game.winner do %>
+    <p>Winner: <%= @game.winner %></p>
+  <% end %>
+  </p>
+</div>
 
-<ul>
-
-  <li>
-    <strong>Winner:</strong>
-    <%= @game.winner %>
-  </li>
-
-  <li>
-    <strong>Ended:</strong>
-    <%= @game.ended %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: Routes.game_path(@conn, :edit, @game) %></span> |
-<span><%= link "Back", to: Routes.game_path(@conn, :index) %></span>
+<span><%= link "Back to overview", to: Routes.page_path(@conn, :index) %></span>
