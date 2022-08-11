@@ -29,12 +29,8 @@ defmodule ConnectGameWeb.GameControllerTest do
       assert redirected_to(conn) == Routes.game_path(conn, :show, id)
 
       conn = get(conn, Routes.game_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Game"
-    end
-
-    test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.game_path(conn, :create), game: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Game"
+      assert html_response(conn, 200) =~ "Game #{id}"
+      assert html_response(conn, 200) =~ "Game in progress"
     end
   end
 
