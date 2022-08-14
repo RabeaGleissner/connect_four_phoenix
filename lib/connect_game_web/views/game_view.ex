@@ -7,4 +7,10 @@ defmodule ConnectGameWeb.GameView do
       false -> "Game in progress"
     end
   end
+
+  def transform_move(move) do
+    move
+    |> Tuple.to_list()
+    |> Enum.join(", ")
+  end
 end

@@ -8,4 +8,13 @@
   </p>
 </div>
 
+<div>
+  <h3>All moves</h3>
+  <ul>
+    <%= for move <- @game.moves do %>
+    <li><%= transform_move(move) %></li>
+  <% end %>
+  </ul>
+</div>
+
 <span><%= link "Back to overview", to: Routes.page_path(@conn, :index) %></span>

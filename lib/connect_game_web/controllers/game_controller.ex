@@ -24,10 +24,15 @@ defmodule ConnectGameWeb.GameController do
     end
   end
 
+
   def show(conn, %{"id" => id}) do
-    game = App.get_game!(id)
+    game = id
+          |> App.get_game!()
+          |> Game.transform_coordinates
+
     render(conn, "show.html", game: game)
   end
+
 
   def edit(conn, %{"id" => id}) do
     game = App.get_game!(id)

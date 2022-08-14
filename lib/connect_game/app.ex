@@ -35,7 +35,10 @@ defmodule ConnectGame.App do
       ** (Ecto.NoResultsError)
 
   """
-  def get_game!(id), do: Repo.get!(Game, id)
+  def get_game!(id) do
+    Repo.get!(Game, id)
+    |> Repo.preload(:moves)
+  end
 
   @doc """
   Creates a game.
@@ -146,8 +149,10 @@ defmodule ConnectGame.App do
 
   """
   def create_move(attrs \\ %{}) do
+    {game, move_attrs} = Map.pop(attrs, :game)
     %Move{}
-    |> Move.changeset(attrs)
+    |> Move.changeset(move_attrs)
+    |> Ecto.Changeset.put_assoc(:game, game)
     |> Repo.insert()
   end
 

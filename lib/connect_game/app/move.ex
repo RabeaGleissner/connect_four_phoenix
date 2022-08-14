@@ -5,7 +5,8 @@ defmodule ConnectGame.App.Move do
   schema "moves" do
     field :coordinates, :binary
     field :player, :string
-    field :game_id, :id
+    belongs_to :game, ConnectGame.App.Game, foreign_key: :game_id
+
 
     timestamps()
   end
