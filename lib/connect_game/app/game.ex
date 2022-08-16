@@ -2,6 +2,9 @@ defmodule ConnectGame.App.Game do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @grid_height 6
+  @grid_width 7
+
   schema "games" do
     field :ended, :boolean, default: false
     field :winner, :string
@@ -25,4 +28,6 @@ defmodule ConnectGame.App.Game do
     end)
     %{moves: coordinates, winner: rest.winner, id: rest.id, ended: rest.ended}
   end
+
+  def grid_width, do: @grid_width
 end

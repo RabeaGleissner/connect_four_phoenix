@@ -17,4 +17,16 @@
   </ul>
 </div>
 
+<div>
+  <ul>
+    <%= for column <- 0..@grid_width do %>
+      <li>
+        <%= form_for @conn, Routes.game_move_path(@conn, :create, @game.id), fn f -> %>
+          <%= render "_place_coin.html", f: f, column: column %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
 <span><%= link "Back to overview", to: Routes.page_path(@conn, :index) %></span>

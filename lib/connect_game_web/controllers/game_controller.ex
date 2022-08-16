@@ -30,7 +30,7 @@ defmodule ConnectGameWeb.GameController do
           |> App.get_game!()
           |> Game.transform_coordinates
 
-    render(conn, "show.html", game: game)
+    render(conn, "show.html", game: game, grid_width: Game.grid_width)
   end
 
 

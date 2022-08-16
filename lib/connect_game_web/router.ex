@@ -18,8 +18,9 @@ defmodule ConnectGameWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/games", GameController
-    resources "/moves", MoveController
+    resources "/games", GameController do
+      resources "/moves", MoveController
+    end
   end
 
   # Other scopes may use custom stacks.

@@ -14,13 +14,19 @@ defmodule ConnectGameWeb.MoveController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  def create(conn, %{"move" => move_params}) do
-    %{"coordinates" => coordinates, "player" => player, "game_id" => game_id} = move_params
+  def create(conn, params) do
+    %{"column" => column, "game_id" => game_id} = params
+    # from game logic package:
+      # check if move is valid
+      # get current player
+      # get coordinates
 
+    player = "red"
     game = App.get_game!(game_id)
+    coordinates = {1, 4}
 
     case App.create_move(%{coordinates: :erlang.term_to_binary(coordinates), player: player, game: game}) do
-      {:ok, move} ->
+      {:ok, _move} ->
         conn
         |> put_flash(:info, "Move created successfully.")
         |> redirect(to: Routes.game_path(conn, :show, game.id))
