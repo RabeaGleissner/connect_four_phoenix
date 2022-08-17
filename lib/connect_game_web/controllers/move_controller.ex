@@ -23,7 +23,15 @@ defmodule ConnectGameWeb.MoveController do
 
     player = "red"
     game = App.get_game!(game_id)
-    coordinates = {1, 4}
+
+    IO.puts("\n***************************")
+    IO.puts("existing moves")
+    IO.inspect(game.moves)
+    # need to convert coordinates to an array of tuples
+    IO.puts("\n***************************")
+
+    next_player = ConnectFour.next_player_turn(game.moves)
+    coordinates = ConnectFour.next_slot_in_column(column, game.moves)
 
     case App.create_move(%{coordinates: :erlang.term_to_binary(coordinates), player: player, game: game}) do
       {:ok, _move} ->
