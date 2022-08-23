@@ -40,17 +40,12 @@ defmodule ConnectGame.App do
   def get_game!(id) do
     Repo.get!(Game, id)
     |> Repo.preload(:moves)
-    |> transform_coordinates()
+    |> transform_moves()
   end
 
-  defp transform_coordinates(game) when length(game.moves) == 0, do: game
-  defp transform_coordinates(game) when length(game.moves) > 0 do
-    Game.transform_coordinates(game)
-  end
-
-  defp transform_player(game) when length(game.moves) == 0, do: game
-  defp transform_player(game) when length(game.moves) > 0 do
-    Game.transform_player(game)
+  defp transform_moves(game) when length(game.moves) == 0, do: game
+  defp transform_moves(game) when length(game.moves) > 0 do
+    Game.transform_moves(game)
   end
 
   @doc """
