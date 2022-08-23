@@ -1,5 +1,6 @@
 defmodule ConnectGameWeb.GameControllerTest do
   use ConnectGameWeb.ConnCase
+  alias ConnectGame.App
 
   import ConnectGame.AppFixtures
 
@@ -14,13 +15,6 @@ defmodule ConnectGameWeb.GameControllerTest do
     end
   end
 
-  describe "new game" do
-    test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.game_path(conn, :new))
-      assert html_response(conn, 200) =~ "New Game"
-    end
-  end
-
   describe "create game" do
     test "redirects to show when data is valid", %{conn: conn} do
       conn = post(conn, Routes.game_path(conn, :create), game: @create_attrs)
@@ -31,6 +25,26 @@ defmodule ConnectGameWeb.GameControllerTest do
       conn = get(conn, Routes.game_path(conn, :show, id))
       assert html_response(conn, 200) =~ "Game #{id}"
       assert html_response(conn, 200) =~ "Game in progress"
+    end
+  end
+
+  describe "show game" do
+    test "displays all game moves", %{conn: conn} do
+      {:ok, game} = App.create_game(%{ended: false, winner: ""})
+      {:ok, _} = App.create_move(%{
+        coordinates: :erlang.term_to_binary({0,0}),
+        player: Atom.to_string(:one),
+        game: game
+      })
+      {:ok, _} = App.create_move(%{
+        coordinates: :erlang.term_to_binary({0,1}),
+        player: Atom.to_string(:two),
+        game: game
+      })
+      conn = get(conn, Routes.game_path(conn, :show, game.id))
+
+      assert html_response(conn, 200) =~ "<li>one: 0, 0</li>"
+      assert html_response(conn, 200) =~ "<li>two: 0, 1</li>"
     end
   end
 

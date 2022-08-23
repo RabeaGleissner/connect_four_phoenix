@@ -11,8 +11,8 @@ defmodule ConnectGame.AppFixtures do
     {:ok, game} =
       attrs
       |> Enum.into(%{
-        ended: true,
-        winner: "some winner"
+        ended: false,
+        winner: nil
       })
       |> ConnectGame.App.create_game()
 
@@ -26,8 +26,8 @@ defmodule ConnectGame.AppFixtures do
     {:ok, move} =
       attrs
       |> Enum.into(%{
-        coordinates: "some coordinates",
-        player: "some player"
+        coordinates: :erlang.term_to_binary({0,0}),
+        player: Atom.to_string(:one)
       })
       |> ConnectGame.App.create_move()
 

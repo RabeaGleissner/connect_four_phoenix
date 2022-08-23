@@ -17,7 +17,9 @@ defmodule ConnectGame.AppTest do
 
     test "get_game!/1 returns the game with given id" do
       game = game_fixture()
-      assert App.get_game!(game.id) == game
+      game_result = App.get_game!(game.id)
+      assert game_result.ended == game.ended
+      assert game_result.winner == game.winner
     end
 
     test "create_game/1 with valid data creates a game" do
@@ -29,22 +31,7 @@ defmodule ConnectGame.AppTest do
     end
 
     test "create_game/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = App.create_game(@invalid_attrs)
-    end
-
-    test "update_game/2 with valid data updates the game" do
-      game = game_fixture()
-      update_attrs = %{ended: false, winner: "some updated winner"}
-
-      assert {:ok, %Game{} = game} = App.update_game(game, update_attrs)
-      assert game.ended == false
-      assert game.winner == "some updated winner"
-    end
-
-    test "update_game/2 with invalid data returns error changeset" do
-      game = game_fixture()
-      assert {:error, %Ecto.Changeset{}} = App.update_game(game, @invalid_attrs)
-      assert game == App.get_game!(game.id)
+      assert {:error, %Ecto.Changeset{}} = App.create_game(%{ended: "something", winner: 3})
     end
 
     test "delete_game/1 deletes the game" do
@@ -67,13 +54,23 @@ defmodule ConnectGame.AppTest do
     @invalid_attrs %{coordinates: nil, player: nil}
 
     test "list_moves/0 returns all moves" do
-      move = move_fixture()
-      assert App.list_moves() == [move]
+      game = game_fixture()
+      move = move_fixture(%{game: game})
+
+      first_move = App.list_moves() |> List.first
+
+      assert first_move.coordinates == move.coordinates
+      assert first_move.game_id == move.game_id
+      assert first_move.player == move.player
     end
 
     test "get_move!/1 returns the move with given id" do
       move = move_fixture()
-      assert App.get_move!(move.id) == move
+
+      move_result = App.get_move!(move.id)
+
+      assert move_result.coordinates == move.coordinates
+      assert move_result.player == move.player
     end
 
     test "create_move/1 with valid data creates a move" do
@@ -95,18 +92,6 @@ defmodule ConnectGame.AppTest do
       assert {:ok, %Move{} = move} = App.update_move(move, update_attrs)
       assert move.coordinates == "some updated coordinates"
       assert move.player == "some updated player"
-    end
-
-    test "update_move/2 with invalid data returns error changeset" do
-      move = move_fixture()
-      assert {:error, %Ecto.Changeset{}} = App.update_move(move, @invalid_attrs)
-      assert move == App.get_move!(move.id)
-    end
-
-    test "delete_move/1 deletes the move" do
-      move = move_fixture()
-      assert {:ok, %Move{}} = App.delete_move(move)
-      assert_raise Ecto.NoResultsError, fn -> App.get_move!(move.id) end
     end
 
     test "change_move/1 returns a move changeset" do
