@@ -22,11 +22,10 @@ defmodule ConnectGame.App.Game do
 
   def transform_coordinates(game) do
     {moves, rest} = Map.pop(game, :moves)
-    coordinates = Enum.map(moves, fn move ->
-      move.coordinates
-      |> :erlang.binary_to_term()
+    moves = Enum.map(moves, fn move ->
+      {String.to_atom(move.player), :erlang.binary_to_term(move.coordinates)}
     end)
-    %{moves: coordinates, winner: rest.winner, id: rest.id, ended: rest.ended}
+    %{game | moves: moves}
   end
 
   def grid_width, do: @grid_width

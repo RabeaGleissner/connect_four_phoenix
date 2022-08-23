@@ -1,4 +1,6 @@
 defmodule ConnectGame.App do
+  alias ConnectGame.App.Game
+
   @moduledoc """
   The App context.
   """
@@ -38,6 +40,17 @@ defmodule ConnectGame.App do
   def get_game!(id) do
     Repo.get!(Game, id)
     |> Repo.preload(:moves)
+    |> transform_coordinates()
+  end
+
+  defp transform_coordinates(game) when length(game.moves) == 0, do: game
+  defp transform_coordinates(game) when length(game.moves) > 0 do
+    Game.transform_coordinates(game)
+  end
+
+  defp transform_player(game) when length(game.moves) == 0, do: game
+  defp transform_player(game) when length(game.moves) > 0 do
+    Game.transform_player(game)
   end
 
   @doc """

@@ -5,30 +5,31 @@ defmodule ConnectGame.GameTest do
   alias ConnectGame.App.Move
 
   describe "Game" do
-    test "transforms move coordinates from binary to tuple" do
+    test "transforms moves" do
       move_1 = %Move{
         coordinates: :erlang.term_to_binary({0, 0}),
         game_id: 1,
         id: 1,
-        player: "blue",
+        player: "one",
       }
 
       move_2 = %Move{
         coordinates: :erlang.term_to_binary({1, 3}),
         game_id: 1,
         id: 2,
-        player: "red",
+        player: "two",
       }
       game = %Game{
         ended: false,
         moves: [move_1, move_2],
-        winner: nil
+        winner: nil,
+        id: 1
       }
 
-      %{moves: moves} = Game.transform_coordinates(game)
+      %{moves: moves} = Game.transform_moves(game)
 
-      assert List.first(moves) == {0 , 0}
-      assert List.last(moves) == {1 , 3}
+      assert List.first(moves) == {:one, {0 , 0}}
+      assert List.last(moves) == {:two, {1 , 3}}
     end
   end
 end

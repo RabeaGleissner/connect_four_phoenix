@@ -8,9 +8,10 @@ defmodule ConnectGameWeb.GameView do
     end
   end
 
-  def transform_move(move) do
-    move
-    |> Tuple.to_list()
-    |> Enum.join(", ")
+  def transform_move({player, coordinates}) do
+    pretty_coordinates = coordinates
+                         |> Tuple.to_list()
+                         |> Enum.join(", ")
+    "#{player}: #{pretty_coordinates}"
   end
 end

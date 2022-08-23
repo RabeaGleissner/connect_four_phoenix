@@ -3,6 +3,7 @@ defmodule ConnectGameWeb.MoveController do
 
   alias ConnectGame.App
   alias ConnectGame.App.Move
+  alias ConnectGame.App.Game
 
   def index(conn, _params) do
     moves = App.list_moves()
@@ -16,30 +17,23 @@ defmodule ConnectGameWeb.MoveController do
 
   def create(conn, params) do
     %{"column" => column, "game_id" => game_id} = params
-    # from game logic package:
-      # check if move is valid
-      # get current player
-      # get coordinates
-
-    player = "red"
     game = App.get_game!(game_id)
+    {:ok, next_player} = ConnectFour.next_player_turn(game.moves)
+    coordinates = ConnectFour.next_slot_in_column(String.to_integer(column), game.moves)
 
-    IO.puts("\n***************************")
-    IO.puts("existing moves")
-    IO.inspect(game.moves)
-    # need to convert coordinates to an array of tuples
-    IO.puts("\n***************************")
-
-    next_player = ConnectFour.next_player_turn(game.moves)
-    coordinates = ConnectFour.next_slot_in_column(column, game.moves)
-
-    case App.create_move(%{coordinates: :erlang.term_to_binary(coordinates), player: player, game: game}) do
+    case App.create_move(%{
+      coordinates: :erlang.term_to_binary(coordinates),
+      player: Atom.to_string(next_player),
+      game: game
+    }) do
       {:ok, _move} ->
         conn
         |> put_flash(:info, "Move created successfully.")
         |> redirect(to: Routes.game_path(conn, :show, game.id))
 
-      #{:error, %Ecto.Changeset{} = changeset} ->
+      {:error, %Ecto.Changeset{} = changeset} ->
+        IO.puts("\n****ERROR!!!!****")
+        IO.inspect(changeset)
         #render(conn, "new.html", changeset: changeset)
     end
   end

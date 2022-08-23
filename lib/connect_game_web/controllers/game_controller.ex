@@ -28,7 +28,6 @@ defmodule ConnectGameWeb.GameController do
   def show(conn, %{"id" => id}) do
     game = id
           |> App.get_game!()
-          |> Game.transform_coordinates
 
     render(conn, "show.html", game: game, grid_width: Game.grid_width)
   end
