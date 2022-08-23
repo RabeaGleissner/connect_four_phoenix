@@ -21,7 +21,7 @@ config :logger, level: :info
 #
 config :connect_game, ConnectGameWeb.Endpoint,
 url: [scheme: "https", host: "immense-badlands-17002.herokuapp.com", port: 443],
-force_ssl: [rewrite_on: [:x_forwarded_proto]],
+force_ssl: [rewrite_on: [:x_forwarded_proto]]
 #       https: [
 #         ...,
 #         port: 443,
