@@ -19,10 +19,9 @@ config :logger, level: :info
 # To get SSL working, you will need to add the `https` key
 # to the previous section and set your `:url` port to 443:
 #
-#     config :connect_game, ConnectGameWeb.Endpoint,
-#       ...,
-       url: [scheme: "https", host: "immense-badlands-17002.herokuapp.com", port: 443],
-       force_ssl: [rewrite_on: [:x_forwarded_proto]],
+config :connect_game, ConnectGameWeb.Endpoint,
+url: [scheme: "https", host: "immense-badlands-17002.herokuapp.com", port: 443],
+force_ssl: [rewrite_on: [:x_forwarded_proto]],
 #       https: [
 #         ...,
 #         port: 443,
