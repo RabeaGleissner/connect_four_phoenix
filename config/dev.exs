@@ -26,7 +26,8 @@ config :connect_game, ConnectGameWeb.Endpoint,
   secret_key_base: "H5xV7yWo0yFN1YFOSh5mKxI9+vBRaTu7BL3mkPVEZ45RbgYYCgaQHjOUxntB9s2g",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support

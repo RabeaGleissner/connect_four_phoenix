@@ -1,5 +1,5 @@
-<div>
-  <h3>Games in progress</h3>
+<div class="mb-4 border w-48 p-2">
+  <h3 class="">Games in progress</h3>
   <%= if length(in_progress_games(@games)) > 0 do %>
     <ul>
       <%= for game <- in_progress_games(@games) do %>
@@ -11,7 +11,7 @@
   <% end %>
 </div>
 
-<div>
+<div class="mb-4 border w-48 p-2">
   <h3>Completed games</h3>
   <%= if length(completed_games(@games)) > 0 do %>
     <ul>
@@ -24,9 +24,9 @@
   <% end %>
 </div>
 
-<div>
+<div class="mb-4">
   <h2>Play a new game</h2>
   <%= form_for @conn, Routes.game_path(@conn, :create), fn _f -> %>
-    <%= submit "Start" %>
+    <%= submit "Start", class: "bg-amber-200 w-24"  %>
   <% end %>
 </div>

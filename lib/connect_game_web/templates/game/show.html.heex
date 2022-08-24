@@ -18,9 +18,9 @@
 </div>
 
 <div>
-  <ul>
+  <ul class="flex">
     <%= for column <- 0..@grid_width do %>
-      <li>
+      <li class="rounded-full px-2 mr-2 bg-slate-200">
         <%= form_for @conn, Routes.game_move_path(@conn, :create, @game.id), fn f -> %>
           <%= render "_place_coin.html", f: f, column: column %>
         <% end %>
