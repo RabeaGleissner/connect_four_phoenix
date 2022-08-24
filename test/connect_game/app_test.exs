@@ -87,7 +87,7 @@ defmodule ConnectGame.AppTest do
     end
 
     test "create_move/1 with valid data creates a move" do
-      valid_attrs = %{coordinates: "some coordinates", player: "some player"}
+      valid_attrs = %{coordinates: "some coordinates", player: "some player", x_coordinate: 1, y_coordinate: 1}
 
       assert {:ok, %Move{} = move} = App.create_move(valid_attrs)
       assert move.coordinates == "some coordinates"
