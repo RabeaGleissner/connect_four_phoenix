@@ -28,6 +28,8 @@ defmodule ConnectGameWeb.GameController do
   def show(conn, %{"id" => id}) do
     game = id
           |> App.get_game!()
+    last_move = id
+                |> App.get_last_move_for_game!
 
     render(conn, "show.html", game: game, grid_width: Game.grid_width, grid_height: Game.grid_height)
   end

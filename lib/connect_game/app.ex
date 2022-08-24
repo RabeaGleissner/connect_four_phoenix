@@ -145,6 +145,24 @@ defmodule ConnectGame.App do
   def get_move!(id), do: Repo.get!(Move, id)
 
   @doc """
+  Gets the most recent move for a game
+
+  Raises `Ecto.NoResultsError` if the Move does not exist.
+
+  ## Examples
+
+      iex> get_last_move_for_game!(123)
+      %Move{}
+
+      iex> get_last_move_for_game!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_last_move_for_game!(game_id) do
+    Move |> where(game_id: ^game_id) |> last(:inserted_at) |> Repo.one
+  end
+
+  @doc """
   Creates a move.
 
   ## Examples

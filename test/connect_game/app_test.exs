@@ -73,6 +73,19 @@ defmodule ConnectGame.AppTest do
       assert move_result.player == move.player
     end
 
+    test "get_last_move_for_game!/1 returns the last inserted move for a game" do
+      game = game_fixture()
+      move_fixture(%{game: game, player: "one"})
+      :timer.sleep(1000)
+      move_fixture(%{game: game, player: "two"})
+      :timer.sleep(1000)
+      move_3 = move_fixture(%{game: game, player: "three"})
+
+      move_result = App.get_last_move_for_game!(game.id)
+
+      assert move_result.player == move_3.player
+    end
+
     test "create_move/1 with valid data creates a move" do
       valid_attrs = %{coordinates: "some coordinates", player: "some player"}
 
