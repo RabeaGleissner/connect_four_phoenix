@@ -1,4 +1,4 @@
-<div>
+<div class="mb-4">
   <h2>Game <%= @game.id %></h2>
   <p><%= game_state(@game) %></p>
   <p>
@@ -8,7 +8,7 @@
   </p>
 </div>
 
-<div>
+<div class="mb-8">
   <h3>All moves</h3>
   <ul>
     <%= for move <- @game.moves do %>
@@ -18,7 +18,7 @@
 </div>
 
 <div>
-  <ul class="flex">
+  <ul class="flex mb-2">
     <%= for column <- 0..@grid_width do %>
       <li class="rounded-full px-2 mr-2 bg-slate-200">
         <%= form_for @conn, Routes.game_move_path(@conn, :create, @game.id), fn f -> %>
@@ -27,6 +27,19 @@
       </li>
     <% end %>
   </ul>
+  <div>
+    <ul>
+      <%= for row <- 0..@grid_height do %>
+      <li class="mb-1">
+        <ul class="flex">
+          <%= for column <- 0..@grid_width do %>
+            <li class="border w-20 h-20 mr-3"></li>
+          <% end %>
+        </ul>
+      </li>
+      <% end %>
+    </ul>
+  </div>
 </div>
 
 <span><%= link "Back to overview", to: Routes.page_path(@conn, :index) %></span>

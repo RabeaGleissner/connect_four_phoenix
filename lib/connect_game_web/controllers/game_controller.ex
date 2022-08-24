@@ -29,7 +29,7 @@ defmodule ConnectGameWeb.GameController do
     game = id
           |> App.get_game!()
 
-    render(conn, "show.html", game: game, grid_width: Game.grid_width)
+    render(conn, "show.html", game: game, grid_width: Game.grid_width, grid_height: Game.grid_height)
   end
 
 

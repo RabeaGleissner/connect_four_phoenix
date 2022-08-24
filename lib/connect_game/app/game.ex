@@ -29,4 +29,5 @@ defmodule ConnectGame.App.Game do
   end
 
   def grid_width, do: @grid_width
+  def grid_height, do: @grid_height
 end
