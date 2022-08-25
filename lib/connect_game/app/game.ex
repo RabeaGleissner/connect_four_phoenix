@@ -4,6 +4,7 @@ defmodule ConnectGame.App.Game do
 
   @grid_height 6
   @grid_width 7
+  @connect_what 4
 
   schema "games" do
     field :ended, :boolean, default: false
@@ -22,4 +23,5 @@ defmodule ConnectGame.App.Game do
 
   def grid_width, do: @grid_width
   def grid_height, do: @grid_height
+  def connect_what, do: @connect_what
 end

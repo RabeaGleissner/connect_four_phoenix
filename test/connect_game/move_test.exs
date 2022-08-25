@@ -1,7 +1,6 @@
 defmodule ConnectGame.MoveTest do
   use ConnectGame.DataCase
 
-  alias ConnectGame.App.Game
   alias ConnectGame.App.Move
 
   describe "Move" do

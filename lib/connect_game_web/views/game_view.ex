@@ -1,6 +1,13 @@
 defmodule ConnectGameWeb.GameView do
   use ConnectGameWeb, :view
 
+  def game_state(game) do
+    case game.ended do
+      true -> "Game over!"
+      false -> "Game in progress"
+    end
+  end
+
   def format_state(state) do
     case state do
       {:won, [winner_id: :one]} -> "Game over. Blue won!"

@@ -19,26 +19,33 @@ defmodule ConnectGameWeb.MoveController do
     %{"column" => column, "game_id" => game_id} = params
     game = App.get_game!(game_id)
     transformed_moves = Move.transform(game.moves)
-    {:ok, next_player} = ConnectFour.next_player_turn(transformed_moves)
-    coordinates = ConnectFour.next_slot_in_column(String.to_integer(column), transformed_moves)
-    {x_coordinate, y_coordinate} = coordinates
 
-    case App.create_move(%{
+    {:ok, current_player} = ConnectFour.next_player_turn(transformed_moves)
+
+    {x_coordinate, y_coordinate} = ConnectFour.next_slot_in_column(String.to_integer(column), transformed_moves)
+
+    {:ok, _move} = App.create_move(%{
       x_coordinate: x_coordinate,
       y_coordinate: y_coordinate,
-      player: Atom.to_string(next_player),
+      player: Atom.to_string(current_player),
       game: game
-    }) do
-      {:ok, _move} ->
-        conn
-        |> put_flash(:info, "Move created successfully.")
-        |> redirect(to: Routes.game_path(conn, :show, game.id))
+    })
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        IO.puts("\n****ERROR!!!!****")
-        IO.inspect(changeset)
-        #render(conn, "new.html", changeset: changeset)
+    game_state = ConnectFour.game_state([
+      moves: [{current_player, {x_coordinate, y_coordinate}} | transformed_moves],
+      current_player: [player_id: current_player, current_move: {x_coordinate, y_coordinate}],
+      config: [connect_what: Game.connect_what, grid_height: Game.grid_height, grid_width: Game.grid_width]
+    ])
+
+    case game_state do
+      {:won, [winner_id: winner_id]} -> App.update_game(game, %{ended: true, winner: Atom.to_string(winner_id)})
+      {:draw} -> App.update_game(game, %{ended: true})
+        _ -> {:ok}
     end
+
+    conn
+    |> put_flash(:info, "Move created successfully.")
+    |> redirect(to: Routes.game_path(conn, :show, game.id))
   end
 
   def show(conn, %{"id" => id}) do
