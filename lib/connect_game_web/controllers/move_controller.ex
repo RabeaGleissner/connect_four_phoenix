@@ -18,14 +18,14 @@ defmodule ConnectGameWeb.MoveController do
   def create(conn, params) do
     %{"column" => column, "game_id" => game_id} = params
     game = App.get_game!(game_id)
-    {:ok, next_player} = ConnectFour.next_player_turn(game.moves)
-    coordinates = ConnectFour.next_slot_in_column(String.to_integer(column), game.moves)
+    transformed_moves = Move.transform(game.moves)
+    {:ok, next_player} = ConnectFour.next_player_turn(transformed_moves)
+    coordinates = ConnectFour.next_slot_in_column(String.to_integer(column), transformed_moves)
     {x_coordinate, y_coordinate} = coordinates
 
     case App.create_move(%{
       x_coordinate: x_coordinate,
       y_coordinate: y_coordinate,
-      coordinates: :erlang.term_to_binary(coordinates),
       player: Atom.to_string(next_player),
       game: game
     }) do

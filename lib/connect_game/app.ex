@@ -40,12 +40,6 @@ defmodule ConnectGame.App do
   def get_game!(id) do
     Repo.get!(Game, id)
     |> Repo.preload(:moves)
-    |> transform_moves()
-  end
-
-  defp transform_moves(game) when length(game.moves) == 0, do: game
-  defp transform_moves(game) when length(game.moves) > 0 do
-    Game.transform_moves(game)
   end
 
   @doc """
@@ -180,24 +174,6 @@ defmodule ConnectGame.App do
     |> Move.changeset(move_attrs)
     |> Ecto.Changeset.put_assoc(:game, game)
     |> Repo.insert()
-  end
-
-  @doc """
-  Updates a move.
-
-  ## Examples
-
-      iex> update_move(move, %{field: new_value})
-      {:ok, %Move{}}
-
-      iex> update_move(move, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_move(%Move{} = move, attrs) do
-    move
-    |> Move.changeset(attrs)
-    |> Repo.update()
   end
 
   @doc """

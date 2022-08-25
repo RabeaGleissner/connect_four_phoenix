@@ -29,6 +29,17 @@ defmodule ConnectGameWeb.GameControllerTest do
   end
 
   describe "show game" do
+    test "when there are no moves", %{conn: conn} do
+      {:ok, game} = App.create_game(%{ended: false, winner: ""})
+
+      conn = get(conn, Routes.game_path(conn, :show, game.id))
+
+      heading_text = html_response(conn, 200)
+                     |> Floki.find("h2")
+                     |> Floki.text
+      assert heading_text == "Game #{game.id}"
+    end
+
     test "displays all game moves", %{conn: conn} do
       {:ok, game} = App.create_game(%{ended: false, winner: ""})
       {:ok, _} = App.create_move(%{

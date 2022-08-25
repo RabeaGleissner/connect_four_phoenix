@@ -87,24 +87,16 @@ defmodule ConnectGame.AppTest do
     end
 
     test "create_move/1 with valid data creates a move" do
-      valid_attrs = %{coordinates: "some coordinates", player: "some player", x_coordinate: 1, y_coordinate: 1}
+      valid_attrs = %{player: "some player", x_coordinate: 1, y_coordinate: 1}
 
       assert {:ok, %Move{} = move} = App.create_move(valid_attrs)
-      assert move.coordinates == "some coordinates"
+      assert move.x_coordinate == 1
+      assert move.y_coordinate == 1
       assert move.player == "some player"
     end
 
     test "create_move/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = App.create_move(@invalid_attrs)
-    end
-
-    test "update_move/2 with valid data updates the move" do
-      move = move_fixture()
-      update_attrs = %{coordinates: "some updated coordinates", player: "some updated player"}
-
-      assert {:ok, %Move{} = move} = App.update_move(move, update_attrs)
-      assert move.coordinates == "some updated coordinates"
-      assert move.player == "some updated player"
     end
 
     test "change_move/1 returns a move changeset" do

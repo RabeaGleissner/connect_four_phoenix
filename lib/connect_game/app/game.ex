@@ -20,14 +20,6 @@ defmodule ConnectGame.App.Game do
     |> validate_required([:ended])
   end
 
-  def transform_moves(game) do
-    {moves, rest} = Map.pop(game, :moves)
-    moves = Enum.map(moves, fn move ->
-      {String.to_atom(move.player), :erlang.binary_to_term(move.coordinates)}
-    end)
-    %{game | moves: moves}
-  end
-
   def grid_width, do: @grid_width
   def grid_height, do: @grid_height
 end

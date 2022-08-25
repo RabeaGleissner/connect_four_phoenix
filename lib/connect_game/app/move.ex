@@ -16,7 +16,13 @@ defmodule ConnectGame.App.Move do
   @doc false
   def changeset(move, attrs) do
     move
-    |> cast(attrs, [:player, :coordinates, :x_coordinate, :y_coordinate])
-    |> validate_required([:player, :coordinates, :x_coordinate, :y_coordinate])
+    |> cast(attrs, [:player, :x_coordinate, :y_coordinate])
+    |> validate_required([:player, :x_coordinate, :y_coordinate])
+  end
+
+  def transform(moves) do
+    Enum.map(moves, fn %{player: player, x_coordinate: x_coordinate, y_coordinate: y_coordinate} ->
+      {String.to_atom(player), {x_coordinate, y_coordinate}}
+    end)
   end
 end
