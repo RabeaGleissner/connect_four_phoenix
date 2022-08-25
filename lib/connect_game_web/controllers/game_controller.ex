@@ -28,22 +28,9 @@ defmodule ConnectGameWeb.GameController do
 
   def show(conn, %{"id" => id}) do
     game = id
-          |> App.get_game!()
-    last_move = id
-                |> App.get_last_move_for_game!
-
-    game_state = case last_move do
-      nil -> {:in_progress}
-      _ -> ConnectFour.game_state([
-          moves: Move.transform(game.moves),
-          current_player: [player_id: String.to_atom(last_move.player), current_move: {last_move.x_coordinate, last_move.y_coordinate}],
-          config: [connect_what: 4, grid_height: Game.grid_height, grid_width: Game.grid_width]
-      ])
-    end
-
-    render(conn, "show.html", game: game, grid_width: Game.grid_width, grid_height: Game.grid_height, state: game_state)
+           |> App.get_game!()
+    render(conn, "show.html", game: game, grid_width: Game.grid_width, grid_height: Game.grid_height)
   end
-
 
   def edit(conn, %{"id" => id}) do
     game = App.get_game!(id)
