@@ -58,27 +58,4 @@ defmodule ConnectGameWeb.MoveController do
     changeset = App.change_move(move)
     render(conn, "edit.html", move: move, changeset: changeset)
   end
-
-  def update(conn, %{"id" => id, "move" => move_params}) do
-    move = App.get_move!(id)
-
-    case App.update_move(move, move_params) do
-      {:ok, move} ->
-        conn
-        |> put_flash(:info, "Move updated successfully.")
-        |> redirect(to: Routes.move_path(conn, :show, move))
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", move: move, changeset: changeset)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    move = App.get_move!(id)
-    {:ok, _move} = App.delete_move(move)
-
-    conn
-    |> put_flash(:info, "Move deleted successfully.")
-    |> redirect(to: Routes.move_path(conn, :index))
-  end
 end

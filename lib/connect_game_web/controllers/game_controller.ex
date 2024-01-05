@@ -3,7 +3,6 @@ defmodule ConnectGameWeb.GameController do
 
   alias ConnectGame.App
   alias ConnectGame.App.Game
-  alias ConnectGame.App.Move
 
   def index(conn, _params) do
     games = App.list_games()
