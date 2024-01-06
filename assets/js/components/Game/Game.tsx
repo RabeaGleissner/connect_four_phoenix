@@ -27,7 +27,7 @@ const Game: React.FC = () => {
 
   return (
     <div>
-      <Grid />
+      <Grid moves={[]} height={4} width={3} />
     </div>
   );
 };
