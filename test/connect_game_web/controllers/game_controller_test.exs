@@ -63,6 +63,18 @@ defmodule ConnectGameWeb.GameControllerTest do
     end
   end
 
+  describe "show game api data" do
+    test "when there are no moves", %{conn: conn} do
+      {:ok, game} = App.create_game(%{ended: false, winner: ""})
+
+      conn = get(conn, Routes.game_path(conn, :show_api, game.id))
+
+      assert json_response(conn, 200)["data"]["id"] == game.id
+      assert json_response(conn, 200)["data"]["ended"] == false
+      assert json_response(conn, 200)["data"]["winner"] == nil
+    end
+  end
+
   describe "edit game" do
     setup [:create_game]
 

@@ -31,6 +31,12 @@ defmodule ConnectGameWeb.GameController do
     render(conn, "show.html", game: game, grid_width: Game.grid_width, grid_height: Game.grid_height)
   end
 
+  def show_api(conn, %{"id" => id}) do
+    game = id
+           |> App.get_game!()
+    render(conn, :show, game: game)
+  end
+
   def edit(conn, %{"id" => id}) do
     game = App.get_game!(id)
     changeset = App.change_game(game)

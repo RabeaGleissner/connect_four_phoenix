@@ -23,6 +23,12 @@ defmodule ConnectGameWeb.Router do
     end
   end
 
+  scope "/api", ConnectGameWeb do
+    pipe_through :api
+
+    get "/games/:id", GameController, :show_api
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", ConnectGameWeb do
   #   pipe_through :api

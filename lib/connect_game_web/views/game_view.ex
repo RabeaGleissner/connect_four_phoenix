@@ -1,6 +1,8 @@
 defmodule ConnectGameWeb.GameView do
   use ConnectGameWeb, :view
 
+  alias ConnectGame.App.Game
+
   def game_state(game) do
     case game.ended do
       true ->
@@ -11,6 +13,19 @@ defmodule ConnectGameWeb.GameView do
         end
       false -> "Game in progress"
     end
+  end
+
+  def render("show.json", %{game: game}) do
+    %{data: data(game)}
+  end
+
+  defp data(%Game{} = game) do
+    %{
+      id: game.id,
+      moves: game.moves,
+      ended: game.ended,
+      winner: game.winner
+    }
   end
 
   defp player_id_to_colour("one"), do: "Blue"
