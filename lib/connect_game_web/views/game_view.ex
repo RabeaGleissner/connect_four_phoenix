@@ -2,6 +2,7 @@ defmodule ConnectGameWeb.GameView do
   use ConnectGameWeb, :view
 
   alias ConnectGame.App.Game
+  alias ConnectGameWeb.MoveView
 
   def game_state(game) do
     case game.ended do
@@ -22,9 +23,9 @@ defmodule ConnectGameWeb.GameView do
   defp data(%Game{} = game) do
     %{
       id: game.id,
-      moves: game.moves,
       ended: game.ended,
-      winner: game.winner
+      winner: game.winner,
+      moves: render_many(game.moves, MoveView, "move.json")
     }
   end
 

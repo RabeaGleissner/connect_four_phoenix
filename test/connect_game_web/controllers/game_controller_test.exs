@@ -73,6 +73,36 @@ defmodule ConnectGameWeb.GameControllerTest do
       assert json_response(conn, 200)["data"]["ended"] == false
       assert json_response(conn, 200)["data"]["winner"] == nil
     end
+
+    test "with moves", %{conn: conn} do
+      {:ok, game} = App.create_game(%{ended: false, winner: ""})
+      {:ok, _} = App.create_move(%{
+        x_coordinate: 0,
+        y_coordinate: 0,
+        coordinates: :erlang.term_to_binary({0,0}),
+        player: Atom.to_string(:one),
+        game: game
+      })
+      {:ok, _} = App.create_move(%{
+        x_coordinate: 0,
+        y_coordinate: 1,
+        coordinates: :erlang.term_to_binary({0,1}),
+        player: Atom.to_string(:two),
+        game: game
+      })
+
+      conn = get(conn, Routes.game_path(conn, :show_api, game.id))
+
+      assert decode_json_data(conn)["id"] == game.id
+      assert decode_json_data(conn)["ended"] == false
+      assert decode_json_data(conn)["winner"] == nil
+
+      returned_moves = decode_json_data(conn)["moves"]
+      assert length(returned_moves) == 2
+      assert List.first(returned_moves)["player"] == "one"
+      assert List.first(returned_moves)["x_coordinate"] == 0
+      assert List.first(returned_moves)["y_coordinate"] == 0
+    end
   end
 
   describe "edit game" do
@@ -117,5 +147,9 @@ defmodule ConnectGameWeb.GameControllerTest do
   defp create_game(_) do
     game = game_fixture()
     %{game: game}
+  end
+
+  defp decode_json_data(conn) do
+    json_response(conn, 200)["data"]
   end
 end

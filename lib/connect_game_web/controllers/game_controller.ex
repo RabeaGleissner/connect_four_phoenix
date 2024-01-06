@@ -34,7 +34,7 @@ defmodule ConnectGameWeb.GameController do
   def show_api(conn, %{"id" => id}) do
     game = id
            |> App.get_game!()
-    render(conn, :show, game: game)
+    render(conn, "show.json", game: game)
   end
 
   def edit(conn, %{"id" => id}) do
