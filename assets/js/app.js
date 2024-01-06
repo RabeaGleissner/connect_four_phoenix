@@ -42,3 +42,5 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
+import renderApp from './react-app'
+renderApp(document.getElementById('react-app'))
