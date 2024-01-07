@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Grid from "./Grid";
+import { transformGameData } from "../../transformers/transformData";
+import { Game } from "../../types/Game";
 
 const baseUrl = "/api/games/";
 const Game: React.FC = () => {
   const [loading, setLoading] = useState(true);
-  const [game, setGame] = useState({});
+  const [game, setGame] = useState<Game>();
   const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch(`${baseUrl}1`)
       .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setGame(data);
+      .then((json) => {
+        setGame(transformGameData(json.data));
         setLoading(false);
       })
       .catch((error) => {
@@ -27,7 +28,11 @@ const Game: React.FC = () => {
 
   return (
     <div>
-      <Grid moves={[]} height={4} width={3} />
+      <Grid
+        moves={game!.moves}
+        height={game!.gridHeight}
+        width={game!.gridWidth}
+      />
     </div>
   );
 };
