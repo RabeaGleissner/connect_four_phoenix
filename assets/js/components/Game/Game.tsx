@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Grid from "./Grid/Grid";
 import { transformGameData } from "../../transformers/transformData";
 import { Game } from "../../types/Game";
+import getGameId from "../../utils/getGameId";
 
 const baseUrl = "/api/games/";
 const Game: React.FC = () => {
@@ -10,7 +11,8 @@ const Game: React.FC = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`${baseUrl}1`)
+    const gameId = getGameId(window.location.pathname);
+    fetch(`${baseUrl}${gameId}`)
       .then((response) => response.json())
       .then((json) => {
         setGame(transformGameData(json.data));
