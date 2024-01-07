@@ -1,6 +1,7 @@
 defmodule ConnectGameWeb.GameControllerTest do
   use ConnectGameWeb.ConnCase
   alias ConnectGame.App
+  alias ConnectGame.App.Game
 
   import ConnectGame.AppFixtures
 
@@ -72,6 +73,9 @@ defmodule ConnectGameWeb.GameControllerTest do
       assert json_response(conn, 200)["data"]["id"] == game.id
       assert json_response(conn, 200)["data"]["ended"] == false
       assert json_response(conn, 200)["data"]["winner"] == nil
+      assert json_response(conn, 200)["data"]["grid_height"] == Game.grid_height()
+      assert json_response(conn, 200)["data"]["grid_width"] == Game.grid_width()
+      assert json_response(conn, 200)["data"]["connect_what"] == Game.connect_what()
     end
 
     test "with moves", %{conn: conn} do

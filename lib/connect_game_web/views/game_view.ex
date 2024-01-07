@@ -25,7 +25,10 @@ defmodule ConnectGameWeb.GameView do
       id: game.id,
       ended: game.ended,
       winner: game.winner,
-      moves: render_many(game.moves, MoveView, "move.json")
+      moves: render_many(game.moves, MoveView, "move.json"),
+      grid_width: Game.grid_width,
+      grid_height: Game.grid_height,
+      connect_what: Game.connect_what
     }
   end
 
