@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Grid from "./Grid";
+import Grid from "./Grid/Grid";
 import { transformGameData } from "../../transformers/transformData";
 import { Game } from "../../types/Game";
 

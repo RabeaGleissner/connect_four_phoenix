@@ -2,7 +2,7 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen, within } from "@testing-library/react";
 import Grid from "./Grid";
-import { Move } from "../../types/Move";
+import { Move } from "../../../types/Move";
 
 describe(Grid, () => {
   it("renders empty grid when there are no moves", () => {
