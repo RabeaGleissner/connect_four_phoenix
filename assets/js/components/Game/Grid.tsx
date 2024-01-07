@@ -59,16 +59,21 @@ const playerToColour = (player: string) => {
   return colours[player];
 };
 
-const Slot = ({ colour = "white" }: { colour?: string }) => {
+const Slot = ({ colour }: { colour?: string }) => {
   return (
-    <li className="border-solid border-2 border-blue-900 w-20 h-20">
+    <li className="block bg-blue-900 border-solid border-1 border-blue-900 w-20 h-20">
       <Coin colour={colour} />
     </li>
   );
 };
 
-const Coin = ({ colour }: { colour: string }) => {
-  return <div className={`w-100 h-100 bg-${colour}-500 rounded-full`}></div>;
+const Coin = ({ colour }: { colour?: string }) => {
+  const backgroundColour = colour ? `bg-${colour}-500` : "bg-white";
+  return (
+    <div className={`block w-16 h-16 ${backgroundColour} rounded-full ml-2`}>
+      &nbsp;
+    </div>
+  );
 };
 
 const rangeUpTo = (n: number) => [...Array(n).keys()];

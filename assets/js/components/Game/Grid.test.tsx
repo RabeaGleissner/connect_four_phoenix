@@ -32,8 +32,8 @@ describe(Grid, () => {
 
     const firstColumnSlots = within(columns[0]).getAllByRole("listitem");
     expect(firstColumnSlots).toHaveLength(gridHeight);
-    expect(firstColumnSlots[0].firstChild).toHaveClass("bg-white-500");
-    expect(firstColumnSlots[1].firstChild).toHaveClass("bg-white-500");
+    expect(firstColumnSlots[0].firstChild).toHaveClass("bg-white");
+    expect(firstColumnSlots[1].firstChild).toHaveClass("bg-white");
     expect(firstColumnSlots[2].firstChild).toHaveClass("bg-yellow-500");
     expect(firstColumnSlots[3].firstChild).toHaveClass("bg-red-500");
     expect(firstColumnSlots[4].firstChild).toHaveClass("bg-yellow-500");
