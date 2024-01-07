@@ -27,6 +27,7 @@ defmodule ConnectGameWeb.Router do
     pipe_through :api
 
     get "/games/:id", GameController, :show_api
+    post "/games/:id/move", GameController, :create_move_api
   end
 
   # Other scopes may use custom stacks.

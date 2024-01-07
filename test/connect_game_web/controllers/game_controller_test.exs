@@ -109,6 +109,45 @@ defmodule ConnectGameWeb.GameControllerTest do
     end
   end
 
+  describe "create move via API" do
+    test "creates move for existing game", %{conn: conn} do
+      {:ok, game}= App.create_game(%{ended: false, winner: ""})
+
+      conn = post(conn, Routes.game_path(conn, :create_move_api, game.id), %{column: "0"})
+
+      assert json_response(conn, 200)["data"]["ended"] == false
+      assert json_response(conn, 200)["data"]["winner"] == nil
+    end
+
+    test "updates game in database when game has a winner", %{conn: conn} do
+      {:ok, game}= App.create_game(%{ended: false, winner: ""})
+
+      create_move(game, 0, 0, :one)
+      create_move(game, 0, 5, :two)
+      create_move(game, 1, 0, :one)
+      create_move(game, 0, 4, :two)
+      create_move(game, 2, 0, :one)
+      create_move(game, 0, 2, :two)
+
+      conn = post(conn, Routes.game_path(conn, :create_move_api, game.id), %{column: "0"})
+
+      assert json_response(conn, 200)["data"]["ended"] == true
+      assert json_response(conn, 200)["data"]["winner"] == "one"
+    end
+
+    test "updates game in database when game is a draw", %{conn: conn} do
+      {:ok, game}= App.create_game(%{ended: false, winner: ""})
+
+      create_41_moves(game)
+
+      conn = post(conn, Routes.game_path(conn, :create_move_api, game.id), %{column: "0"})
+
+      assert json_response(conn, 200)["data"]["ended"] == true
+      assert json_response(conn, 200)["data"]["winner"] == nil
+    end
+  end
+
+
   describe "edit game" do
     setup [:create_game]
 
@@ -155,5 +194,26 @@ defmodule ConnectGameWeb.GameControllerTest do
 
   defp decode_json_data(conn) do
     json_response(conn, 200)["data"]
+  end
+
+  defp create_move(game, x, y, player) do
+    {:ok, _} = App.create_move(%{
+      x_coordinate: x,
+      y_coordinate: y,
+      player: Atom.to_string(player),
+      game: game
+    })
+  end
+
+  defp create_41_moves(game) do
+    for row <- 0..5 do
+      for column <- 0..5 do
+        create_move(game, row, column, :one)
+      end
+    end
+
+    for column <- 0..4 do
+      create_move(game, 6, column, :two)
+    end
   end
 end
