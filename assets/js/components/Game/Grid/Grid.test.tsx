@@ -8,7 +8,7 @@ describe(Grid, () => {
   it("renders empty grid when there are no moves", () => {
     const gridWidth = 3;
     const gridHeight = 4;
-    render(<Grid moves={[]} width={gridWidth} height={gridHeight} />);
+    render(<Grid originalMoves={[]} width={gridWidth} height={gridHeight} />);
 
     const columns = screen.getAllByRole("list");
     expect(columns).toHaveLength(gridWidth);
@@ -25,7 +25,9 @@ describe(Grid, () => {
       { id: 2, xCoordinate: 1, yCoordinate: 0, player: "two" },
       { id: 3, xCoordinate: 2, yCoordinate: 0, player: "one" },
     ];
-    render(<Grid moves={moves} width={gridWidth} height={gridHeight} />);
+    render(
+      <Grid originalMoves={moves} width={gridWidth} height={gridHeight} />
+    );
 
     const columns = screen.getAllByRole("list");
     expect(columns).toHaveLength(gridWidth);

@@ -25,13 +25,12 @@ const Game: React.FC = () => {
   }, []);
 
   if (loading) return <div>Loading...</div>;
-  if (error)
-    return <div>Apologies! Something went wrong. Please reload the page.</div>;
+  if (error) return <div>Apologies! Something went wrong.</div>;
 
   return (
     <div>
       <Grid
-        moves={game!.moves}
+        originalMoves={game!.moves}
         height={game!.gridHeight}
         width={game!.gridWidth}
       />
