@@ -45,7 +45,7 @@ defmodule ConnectGameWeb.GameController do
 
     {:ok, current_player} = ConnectFour.next_player_turn(transformed_moves)
 
-    {x_coordinate, y_coordinate} = ConnectFour.next_slot_in_column(String.to_integer(column), transformed_moves)
+    {x_coordinate, y_coordinate} = ConnectFour.next_slot_in_column(column, transformed_moves)
 
     {:ok, _move} = App.create_move(%{
       x_coordinate: x_coordinate,
@@ -63,7 +63,7 @@ defmodule ConnectGameWeb.GameController do
     {:ok, game} = case game_state do
       {:won, [winner_id: winner_id]} -> App.update_game(game, %{ended: true, winner: Atom.to_string(winner_id)})
       {:draw} -> App.update_game(game, %{ended: true})
-        _ -> {:ok, game}
+        _ -> {:ok, App.get_game!(id)}
     end
 
     render(conn, "show.json", game: game)

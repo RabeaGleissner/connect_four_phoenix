@@ -113,7 +113,7 @@ defmodule ConnectGameWeb.GameControllerTest do
     test "creates move for existing game", %{conn: conn} do
       {:ok, game}= App.create_game(%{ended: false, winner: ""})
 
-      conn = post(conn, Routes.game_path(conn, :create_move_api, game.id), %{column: "0"})
+      conn = post(conn, Routes.game_path(conn, :create_move_api, game.id), %{column: 0})
 
       assert json_response(conn, 200)["data"]["ended"] == false
       assert json_response(conn, 200)["data"]["winner"] == nil
@@ -129,7 +129,7 @@ defmodule ConnectGameWeb.GameControllerTest do
       create_move(game, 2, 0, :one)
       create_move(game, 0, 2, :two)
 
-      conn = post(conn, Routes.game_path(conn, :create_move_api, game.id), %{column: "0"})
+      conn = post(conn, Routes.game_path(conn, :create_move_api, game.id), %{column: 0})
 
       assert json_response(conn, 200)["data"]["ended"] == true
       assert json_response(conn, 200)["data"]["winner"] == "one"
@@ -140,7 +140,7 @@ defmodule ConnectGameWeb.GameControllerTest do
 
       create_41_moves(game)
 
-      conn = post(conn, Routes.game_path(conn, :create_move_api, game.id), %{column: "0"})
+      conn = post(conn, Routes.game_path(conn, :create_move_api, game.id), %{column: 0})
 
       assert json_response(conn, 200)["data"]["ended"] == true
       assert json_response(conn, 200)["data"]["winner"] == nil
