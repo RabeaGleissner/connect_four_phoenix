@@ -1,14 +1,29 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen, within } from "@testing-library/react";
-import Grid from "./Grid";
+import Grid, { GridProps } from "./Grid";
 import { Move } from "../../../types/Move";
 
 describe(Grid, () => {
+  const gridWidth = 3;
+  const gridHeight = 4;
+
+  const commonGridProps: GridProps = {
+    originalMoves: [],
+    width: gridWidth,
+    height: gridHeight,
+    gameId: 1,
+  };
+
   it("renders empty grid when there are no moves", () => {
-    const gridWidth = 3;
-    const gridHeight = 4;
-    render(<Grid originalMoves={[]} width={gridWidth} height={gridHeight} />);
+    render(
+      <Grid
+        {...commonGridProps}
+        originalMoves={[]}
+        width={gridWidth}
+        height={gridHeight}
+      />
+    );
 
     const columns = screen.getAllByRole("list");
     expect(columns).toHaveLength(gridWidth);
@@ -26,7 +41,12 @@ describe(Grid, () => {
       { id: 3, xCoordinate: 2, yCoordinate: 0, player: "one" },
     ];
     render(
-      <Grid originalMoves={moves} width={gridWidth} height={gridHeight} />
+      <Grid
+        {...commonGridProps}
+        originalMoves={moves}
+        width={gridWidth}
+        height={gridHeight}
+      />
     );
 
     const columns = screen.getAllByRole("list");

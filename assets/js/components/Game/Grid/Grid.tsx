@@ -4,7 +4,7 @@ import rangeUpTo from "../../../utils/rangeUpTo";
 import Column from "./Colum";
 import { useMakeMove } from "../../../hooks/useMakeMove";
 
-interface GridProps {
+export interface GridProps {
   originalMoves: Move[];
   width: number;
   height: number;
