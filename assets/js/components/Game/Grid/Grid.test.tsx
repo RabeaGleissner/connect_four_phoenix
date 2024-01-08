@@ -22,8 +22,8 @@ describe(Grid, () => {
     const gridHeight = 5;
     const moves: Move[] = [
       { id: 1, xCoordinate: 0, yCoordinate: 0, player: "one" },
-      { id: 2, xCoordinate: 0, yCoordinate: 1, player: "two" },
-      { id: 3, xCoordinate: 0, yCoordinate: 2, player: "one" },
+      { id: 2, xCoordinate: 1, yCoordinate: 0, player: "two" },
+      { id: 3, xCoordinate: 2, yCoordinate: 0, player: "one" },
     ];
     render(<Grid moves={moves} width={gridWidth} height={gridHeight} />);
 

@@ -26,7 +26,7 @@ const Grid = ({ moves, width, height }: GridProps) => {
 };
 
 const movesForColumn = (moves: Move[], columnIndex: number) => {
-  return moves.filter((move) => move.xCoordinate === columnIndex);
+  return moves.filter((move) => move.yCoordinate === columnIndex);
 };
 
 export default Grid;
