@@ -33,6 +33,7 @@ const Game: React.FC = () => {
         originalMoves={game!.moves}
         height={game!.gridHeight}
         width={game!.gridWidth}
+        gameId={game!.id}
       />
     </div>
   );

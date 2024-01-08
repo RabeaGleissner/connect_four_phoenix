@@ -8,13 +8,14 @@ interface GridProps {
   originalMoves: Move[];
   width: number;
   height: number;
+  gameId: number;
 }
 
-const Grid = ({ originalMoves, width, height }: GridProps) => {
+const Grid = ({ originalMoves, width, height, gameId }: GridProps) => {
   const [moves, setMoves] = useState<Move[]>(originalMoves);
 
   const handleCoinDrop = (colIndex: number) => {
-    fetch("/api/games/6/move", {
+    fetch(`/api/games/${gameId}/move`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ column: colIndex }),
