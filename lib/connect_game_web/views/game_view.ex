@@ -12,18 +12,6 @@ defmodule ConnectGameWeb.GameView do
     games |> Enum.reject(fn game -> game.ended end)
   end
 
-  def game_state(game) do
-    case game.ended do
-      true ->
-        if (game.winner) do
-          "Game over. #{player_id_to_colour(game.winner)} won!"
-        else
-          "Game over. It's a draw."
-        end
-      false -> "Game in progress"
-    end
-  end
-
   def render("show.json", %{game: game}) do
     %{data: data(game)}
   end
@@ -39,7 +27,4 @@ defmodule ConnectGameWeb.GameView do
       connect_what: Game.connect_what
     }
   end
-
-  defp player_id_to_colour("one"), do: "Blue"
-  defp player_id_to_colour("two"), do: "Red"
 end
