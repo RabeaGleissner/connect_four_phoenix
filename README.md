@@ -1,17 +1,22 @@
 # Connect Four Game
 
-Work in progress...
+A connect four game with an Elixir backend and a React frontend.
 
+## Local development setup
+
+  * Install dependencies with `mix deps.get`
+  * Create and migrate the database with `mix ecto.setup`
+  * Install React and friends with `npm i` in the `assets` directory
 
 ## How to run it
 
-To start your Phoenix server:
+To start your Phoenix server locally:
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+  * `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
-Run the tests with:
+## Running the tests:
 
-`mix test`
+- backend: `mix test`
+- frontend: `cd assets` then `npm t`
+
 
