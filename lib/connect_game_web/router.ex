@@ -18,8 +18,8 @@ defmodule ConnectGameWeb.Router do
     pipe_through :browser
 
     get "/", GameController, :index
-    resources "/games", GameController, except: [:index, :edit, :update, :delete] do
-    end
+    post "/games", GameController, :create
+    get "/games/:id", GameController, :show
   end
 
   scope "/api", ConnectGameWeb do
@@ -28,11 +28,6 @@ defmodule ConnectGameWeb.Router do
     get "/games/:id", GameController, :show_api
     post "/games/:id/move", GameController, :create_move_api
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", ConnectGameWeb do
-  #   pipe_through :api
-  # end
 
   # Enables LiveDashboard only for development
   #
