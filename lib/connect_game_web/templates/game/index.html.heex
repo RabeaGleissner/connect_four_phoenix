@@ -1,28 +1,32 @@
-<h1>Listing Games</h1>
+<div class="mb-4 border w-48 p-2">
+  <h3 class="">Games in progress</h3>
+  <%= if length(in_progress_games(@games)) > 0 do %>
+    <ul>
+      <%= for game <- in_progress_games(@games) do %>
+        <li><%= link("Game #{game.id}", to: Routes.game_path(@conn, :show, game)) %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    --.--
+  <% end %>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Winner</th>
-      <th>Ended</th>
+<div class="mb-4 border w-48 p-2">
+  <h3>Completed games</h3>
+  <%= if length(completed_games(@games)) > 0 do %>
+    <ul>
+      <%= for game <- completed_games(@games) do %>
+        <li><%= link("Game #{game.id}", to: Routes.game_path(@conn, :show, game)) %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    --.--
+  <% end %>
+</div>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for game <- @games do %>
-    <tr>
-      <td><%= game.winner %></td>
-      <td><%= game.ended %></td>
-
-      <td>
-        <span><%= link "Show", to: Routes.game_path(@conn, :show, game) %></span>
-        <span><%= link "Edit", to: Routes.game_path(@conn, :edit, game) %></span>
-        <span><%= link "Delete", to: Routes.game_path(@conn, :delete, game), method: :delete, data: [confirm: "Are you sure?"] %></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
-
-<span><%= link "New Game", to: Routes.game_path(@conn, :new) %></span>
+<div class="mb-4">
+  <h2>Play a new game</h2>
+  <%= form_for @conn, Routes.game_path(@conn, :create), fn _f -> %>
+    <%= submit "Start", class: "bg-amber-200 w-24"  %>
+  <% end %>
+</div>

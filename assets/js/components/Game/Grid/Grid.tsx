@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Move } from "../../../types/Move";
 import rangeUpTo from "../../../utils/rangeUpTo";
 import Column from "./Colum";
-import { useMakeMove } from "../../../hooks/useMakeMove";
+import { transformGameData } from "../../../transformers/transformData";
+import { baseUrl } from "../../../config";
 
 export interface GridProps {
   originalMoves: Move[];
@@ -14,15 +15,23 @@ export interface GridProps {
 const Grid = ({ originalMoves, width, height, gameId }: GridProps) => {
   const [moves, setMoves] = useState<Move[]>(originalMoves);
   const [error, setError] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleCoinDrop = (colIndex: number) => {
-    const { moves, error, loading } = useMakeMove(gameId, colIndex);
-    setError(error);
-    setLoading(loading);
-    if (moves) {
-      setMoves(moves);
-    }
+    fetch(`${baseUrl}${gameId}/move`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ column: colIndex }),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        setMoves(transformGameData(json.data).moves);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setError(error);
+      });
   };
 
   return (

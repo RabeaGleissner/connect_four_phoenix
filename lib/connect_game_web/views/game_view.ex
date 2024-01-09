@@ -4,6 +4,14 @@ defmodule ConnectGameWeb.GameView do
   alias ConnectGame.App.Game
   alias ConnectGameWeb.MoveView
 
+  def completed_games(games) do
+    games |> Enum.filter(fn game -> game.ended end)
+  end
+
+  def in_progress_games(games) do
+    games |> Enum.reject(fn game -> game.ended end)
+  end
+
   def game_state(game) do
     case game.ended do
       true ->

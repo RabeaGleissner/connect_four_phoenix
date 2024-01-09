@@ -17,8 +17,8 @@ defmodule ConnectGameWeb.Router do
   scope "/", ConnectGameWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
-    resources "/games", GameController do
+    get "/", GameController, :index
+    resources "/games", GameController, except: [:index, :edit, :update, :delete] do
       resources "/moves", MoveController
     end
   end
