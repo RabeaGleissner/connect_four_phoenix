@@ -19,7 +19,6 @@ defmodule ConnectGameWeb.Router do
 
     get "/", GameController, :index
     resources "/games", GameController, except: [:index, :edit, :update, :delete] do
-      resources "/moves", MoveController
     end
   end
 
