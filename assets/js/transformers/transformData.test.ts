@@ -15,28 +15,24 @@ describe("transformData", () => {
           x_coordinate: 0,
           y_coordinate: 0,
           player: "one",
-          coordinates: null,
         },
         {
           id: 2,
           x_coordinate: 0,
           y_coordinate: 1,
           player: "two",
-          coordinates: null,
         },
         {
           id: 3,
           x_coordinate: 0,
           y_coordinate: 2,
           player: "one",
-          coordinates: null,
         },
         {
           id: 4,
           x_coordinate: 0,
           y_coordinate: 3,
           player: "two",
-          coordinates: null,
         },
       ],
     };

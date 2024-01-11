@@ -3,7 +3,6 @@ defmodule ConnectGame.App.Move do
   import Ecto.Changeset
 
   schema "moves" do
-    field :coordinates, :binary
     field :x_coordinate, :integer
     field :y_coordinate, :integer
     field :player, :string

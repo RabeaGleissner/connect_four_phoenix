@@ -3,5 +3,4 @@ export interface Move {
   xCoordinate: number;
   yCoordinate: number;
   player: string;
-  coordinates?: any; // will be removed
 }

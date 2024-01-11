@@ -28,7 +28,6 @@ defmodule ConnectGame.AppFixtures do
       |> Enum.into(%{
         x_coordinate: 0,
         y_coordinate: 0,
-        coordinates: :erlang.term_to_binary({0,0}),
         player: Atom.to_string(:one)
       })
       |> ConnectGame.App.create_move()

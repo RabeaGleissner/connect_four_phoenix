@@ -84,14 +84,12 @@ defmodule ConnectGameWeb.GameControllerTest do
       {:ok, _} = App.create_move(%{
         x_coordinate: 0,
         y_coordinate: 0,
-        coordinates: :erlang.term_to_binary({0,0}),
         player: Atom.to_string(:one),
         game: game
       })
       {:ok, _} = App.create_move(%{
         x_coordinate: 0,
         y_coordinate: 1,
-        coordinates: :erlang.term_to_binary({0,1}),
         player: Atom.to_string(:two),
         game: game
       })

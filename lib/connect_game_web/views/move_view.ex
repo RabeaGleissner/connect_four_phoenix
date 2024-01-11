@@ -7,7 +7,6 @@ defmodule ConnectGameWeb.MoveView do
       x_coordinate: move.x_coordinate,
       y_coordinate: move.y_coordinate,
       player: move.player,
-      coordinates: move.coordinates
     }
   end
 end

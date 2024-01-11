@@ -51,7 +51,7 @@ defmodule ConnectGame.AppTest do
 
     import ConnectGame.AppFixtures
 
-    @invalid_attrs %{coordinates: nil, player: nil}
+    @invalid_attrs %{player: nil}
 
     test "list_moves/0 returns all moves" do
       game = game_fixture()
@@ -59,7 +59,6 @@ defmodule ConnectGame.AppTest do
 
       first_move = App.list_moves() |> List.first
 
-      assert first_move.coordinates == move.coordinates
       assert first_move.game_id == move.game_id
       assert first_move.player == move.player
     end
@@ -69,7 +68,6 @@ defmodule ConnectGame.AppTest do
 
       move_result = App.get_move!(move.id)
 
-      assert move_result.coordinates == move.coordinates
       assert move_result.player == move.player
     end
 
