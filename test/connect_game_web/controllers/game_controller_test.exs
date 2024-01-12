@@ -150,6 +150,13 @@ defmodule ConnectGameWeb.GameControllerTest do
       assert json_response(conn, 200)["data"]["ended"] == true
       assert json_response(conn, 200)["data"]["winner"] == nil
     end
+
+    test "does not allow move when game has ended", %{conn: conn} do
+      ended_game = game_fixture(%{ended: true, winner: "red"})
+      conn = post(conn, Routes.game_path(conn, :create_move_api, ended_game.id), %{column: 0})
+
+      assert json_response(conn, 400)["error"] == "Game over! Not allowed to create a move."
+    end
   end
 
   defp create_game(_) do

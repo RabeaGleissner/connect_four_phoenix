@@ -44,43 +44,52 @@ defmodule ConnectGameWeb.GameController do
   def create_move_api(conn, params) do
     %{"column" => column, "id" => id} = params
     game = App.get_game!(id)
-    transformed_moves = Move.transform(game.moves)
 
-    {:ok, current_player} = ConnectFour.next_player_turn(transformed_moves)
+    if game.ended do
+      conn
+      |> put_status(400)
+      |> put_view(ConnectGameWeb.ErrorView)
+      |> render("move_creation_error.json", %{message: "Game over! Not allowed to create a move."})
+      |> Plug.Conn.halt()
+    else
+      transformed_moves = Move.transform(game.moves)
 
-    {x_coordinate, y_coordinate} = ConnectFour.next_slot_in_column(column, transformed_moves)
+      {:ok, current_player} = ConnectFour.next_player_turn(transformed_moves)
 
-    {:ok, _move} =
-      App.create_move(%{
-        x_coordinate: x_coordinate,
-        y_coordinate: y_coordinate,
-        player: Atom.to_string(current_player),
-        game: game
-      })
+      {x_coordinate, y_coordinate} = ConnectFour.next_slot_in_column(column, transformed_moves)
 
-    game_state =
-      ConnectFour.game_state(
-        moves: [{current_player, {x_coordinate, y_coordinate}} | transformed_moves],
-        current_player: [player_id: current_player, current_move: {x_coordinate, y_coordinate}],
-        config: [
-          connect_what: Game.connect_what(),
-          grid_height: Game.grid_height(),
-          grid_width: Game.grid_width()
-        ]
-      )
+      {:ok, _move} =
+        App.create_move(%{
+          x_coordinate: x_coordinate,
+          y_coordinate: y_coordinate,
+          player: Atom.to_string(current_player),
+          game: game
+        })
 
-    {:ok, game} =
-      case game_state do
-        {:won, [winner_id: winner_id]} ->
-          App.update_game(game, %{ended: true, winner: Atom.to_string(winner_id)})
+      game_state =
+        ConnectFour.game_state(
+          moves: [{current_player, {x_coordinate, y_coordinate}} | transformed_moves],
+          current_player: [player_id: current_player, current_move: {x_coordinate, y_coordinate}],
+          config: [
+            connect_what: Game.connect_what(),
+            grid_height: Game.grid_height(),
+            grid_width: Game.grid_width()
+          ]
+        )
 
-        {:draw} ->
-          App.update_game(game, %{ended: true})
+      {:ok, game} =
+        case game_state do
+          {:won, [winner_id: winner_id]} ->
+            App.update_game(game, %{ended: true, winner: Atom.to_string(winner_id)})
 
-        _ ->
-          {:ok, App.get_game!(id)}
-      end
+          {:draw} ->
+            App.update_game(game, %{ended: true})
 
-    render(conn, "show.json", game: game)
+          _ ->
+            {:ok, App.get_game!(id)}
+        end
+
+      render(conn, "show.json", game: game)
+    end
   end
 end
