@@ -10,9 +10,10 @@ describe(Grid, () => {
 
   const commonGridProps: GridProps = {
     originalMoves: [],
-    width: gridWidth,
-    height: gridHeight,
+    gridWidth,
+    gridHeight,
     gameId: 1,
+    ended: false,
   };
 
   it("renders empty grid when there are no moves", () => {
@@ -20,8 +21,8 @@ describe(Grid, () => {
       <Grid
         {...commonGridProps}
         originalMoves={[]}
-        width={gridWidth}
-        height={gridHeight}
+        gridWidth={gridWidth}
+        gridHeight={gridHeight}
       />
     );
 
@@ -44,8 +45,8 @@ describe(Grid, () => {
       <Grid
         {...commonGridProps}
         originalMoves={moves}
-        width={gridWidth}
-        height={gridHeight}
+        gridWidth={gridWidth}
+        gridHeight={gridHeight}
       />
     );
 
@@ -59,5 +60,25 @@ describe(Grid, () => {
     expect(firstColumnSlots[2].firstChild).toHaveClass("bg-yellow-500");
     expect(firstColumnSlots[3].firstChild).toHaveClass("bg-red-500");
     expect(firstColumnSlots[4].firstChild).toHaveClass("bg-yellow-500");
+  });
+
+  it("enables buttons for coin drop when game is not over", () => {
+    render(<Grid {...commonGridProps} ended={false} />);
+
+    const buttons = screen.getAllByLabelText("Drop coin in column");
+
+    buttons.forEach((button) => {
+      expect(button).toBeEnabled();
+    });
+  });
+
+  it("disables buttons for coin drop when game is over", () => {
+    render(<Grid {...commonGridProps} ended={true} />);
+
+    const buttons = screen.getAllByLabelText("Drop coin in column");
+
+    buttons.forEach((button) => {
+      expect(button).toBeDisabled();
+    });
   });
 });

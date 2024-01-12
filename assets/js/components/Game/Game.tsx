@@ -1,10 +1,10 @@
 import React from "react";
 import Grid from "./Grid/Grid";
-import { Game } from "../../types/Game";
 import getGameId from "../../utils/getGameId";
 import { useGetGame } from "../../hooks/useGetGame";
+import GameState from "./GameState/GameState";
 
-const Game: React.FC = () => {
+const Game = () => {
   const gameId = getGameId(window.location.pathname);
 
   const { game, error, loading } = useGetGame(gameId);
@@ -13,12 +13,16 @@ const Game: React.FC = () => {
   if (error) return <div>Apologies! Something went wrong.</div>;
 
   return (
-    <Grid
-      originalMoves={game!.moves}
-      height={game!.gridHeight}
-      width={game!.gridWidth}
-      gameId={game!.id}
-    />
+    <>
+      <GameState winner={game!.winner} draw={game!.draw} />
+      <Grid
+        originalMoves={game!.moves}
+        gridHeight={game!.gridHeight}
+        gridWidth={game!.gridWidth}
+        gameId={game!.id}
+        ended={game!.ended}
+      />
+    </>
   );
 };
 

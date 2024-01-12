@@ -10,6 +10,7 @@ export const transformGameData = (gameData: Record<string, any>): Game => {
     gridHeight: gameData.grid_height,
     gridWidth: gameData.grid_width,
     connectWhat: gameData.connect_what,
+    draw: gameData.draw,
   };
 };
 

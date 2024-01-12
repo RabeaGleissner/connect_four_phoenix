@@ -8,4 +8,5 @@ export interface Game {
   gridHeight: number;
   gridWidth: number;
   connectWhat: number;
+  draw: boolean;
 }

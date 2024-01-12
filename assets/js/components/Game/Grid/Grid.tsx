@@ -4,15 +4,19 @@ import rangeUpTo from "../../../utils/rangeUpTo";
 import Column from "./Colum";
 import { transformGameData } from "../../../transformers/transformData";
 import { baseUrl } from "../../../config";
+import { Game } from "../../../types/Game";
 
-export interface GridProps {
-  originalMoves: Move[];
-  width: number;
-  height: number;
-  gameId: number;
-}
+export type GridProps = Pick<Game, "gridWidth" | "gridHeight" | "ended"> & {
+  gameId: Game["id"];
+} & { originalMoves: Game["moves"] };
 
-const Grid = ({ originalMoves, width, height, gameId }: GridProps) => {
+const Grid = ({
+  originalMoves,
+  gridWidth,
+  gridHeight,
+  gameId,
+  ended,
+}: GridProps) => {
   const [moves, setMoves] = useState<Move[]>(originalMoves);
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -42,17 +46,18 @@ const Grid = ({ originalMoves, width, height, gameId }: GridProps) => {
         </p>
       )}
       <div className="flex">
-        {rangeUpTo(width).map((colIndex) => (
+        {rangeUpTo(gridWidth).map((colIndex) => (
           <div key={colIndex}>
             <button
+              aria-label="Drop coin in column"
               onClick={() => handleCoinDrop(colIndex)}
               className="w-20 h-10"
-              disabled={loading}
+              disabled={loading || ended}
             >
               <p className="text-xl">⬇</p>️
             </button>
             <Column
-              height={height}
+              height={gridHeight}
               index={colIndex}
               columnMoves={movesForColumn(moves, colIndex)}
             />

@@ -11,10 +11,10 @@ defmodule ConnectGameWeb.GameControllerTest do
 
       assert html_response(conn, 200) =~ "Play a new game"
 
-      start_button_text = html_response(conn, 200)
-                          |> Floki.find("button[type='submit']")
-                          |> Floki.text
-
+      start_button_text =
+        html_response(conn, 200)
+        |> Floki.find("button[type='submit']")
+        |> Floki.text()
 
       assert start_button_text == "Start"
     end
@@ -24,7 +24,6 @@ defmodule ConnectGameWeb.GameControllerTest do
 
       assert html_response(conn, 200) =~ "--.--"
     end
-
 
     test "lists all games", %{conn: conn} do
       %{game: first_game} = create_game(%{ended: false, winner: nil})
@@ -58,9 +57,11 @@ defmodule ConnectGameWeb.GameControllerTest do
 
       conn = get(conn, Routes.game_path(conn, :show, game.id))
 
-      heading_text = html_response(conn, 200)
-                     |> Floki.find("h1")
-                     |> Floki.text
+      heading_text =
+        html_response(conn, 200)
+        |> Floki.find("h1")
+        |> Floki.text()
+
       assert heading_text == "Game #{game.id}"
     end
   end
@@ -77,22 +78,27 @@ defmodule ConnectGameWeb.GameControllerTest do
       assert json_response(conn, 200)["data"]["grid_height"] == Game.grid_height()
       assert json_response(conn, 200)["data"]["grid_width"] == Game.grid_width()
       assert json_response(conn, 200)["data"]["connect_what"] == Game.connect_what()
+      assert json_response(conn, 200)["data"]["draw"] == false
     end
 
     test "with moves", %{conn: conn} do
       {:ok, game} = App.create_game(%{ended: false, winner: ""})
-      {:ok, _} = App.create_move(%{
-        x_coordinate: 0,
-        y_coordinate: 0,
-        player: Atom.to_string(:one),
-        game: game
-      })
-      {:ok, _} = App.create_move(%{
-        x_coordinate: 0,
-        y_coordinate: 1,
-        player: Atom.to_string(:two),
-        game: game
-      })
+
+      {:ok, _} =
+        App.create_move(%{
+          x_coordinate: 0,
+          y_coordinate: 0,
+          player: Atom.to_string(:one),
+          game: game
+        })
+
+      {:ok, _} =
+        App.create_move(%{
+          x_coordinate: 0,
+          y_coordinate: 1,
+          player: Atom.to_string(:two),
+          game: game
+        })
 
       conn = get(conn, Routes.game_path(conn, :show_api, game.id))
 
@@ -110,7 +116,7 @@ defmodule ConnectGameWeb.GameControllerTest do
 
   describe "create move via API" do
     test "creates move for existing game", %{conn: conn} do
-      {:ok, game}= App.create_game(%{ended: false, winner: ""})
+      {:ok, game} = App.create_game(%{ended: false, winner: ""})
 
       conn = post(conn, Routes.game_path(conn, :create_move_api, game.id), %{column: 0})
 
@@ -119,7 +125,7 @@ defmodule ConnectGameWeb.GameControllerTest do
     end
 
     test "updates game in database when game has a winner", %{conn: conn} do
-      {:ok, game}= App.create_game(%{ended: false, winner: ""})
+      {:ok, game} = App.create_game(%{ended: false, winner: ""})
 
       create_move(game, 0, 0, :one)
       create_move(game, 0, 5, :two)
@@ -135,7 +141,7 @@ defmodule ConnectGameWeb.GameControllerTest do
     end
 
     test "updates game in database when game is a draw", %{conn: conn} do
-      {:ok, game}= App.create_game(%{ended: false, winner: ""})
+      {:ok, game} = App.create_game(%{ended: false, winner: ""})
 
       create_41_moves(game)
 
@@ -156,12 +162,13 @@ defmodule ConnectGameWeb.GameControllerTest do
   end
 
   defp create_move(game, x, y, player) do
-    {:ok, _} = App.create_move(%{
-      x_coordinate: x,
-      y_coordinate: y,
-      player: Atom.to_string(player),
-      game: game
-    })
+    {:ok, _} =
+      App.create_move(%{
+        x_coordinate: x,
+        y_coordinate: y,
+        player: Atom.to_string(player),
+        game: game
+      })
   end
 
   defp create_41_moves(game) do

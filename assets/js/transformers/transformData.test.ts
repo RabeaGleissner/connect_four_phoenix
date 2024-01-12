@@ -9,6 +9,7 @@ describe("transformData", () => {
       grid_height: 10,
       grid_width: 11,
       connect_what: 6,
+      draw: false,
       moves: [
         {
           id: 1,
@@ -44,6 +45,7 @@ describe("transformData", () => {
       winner: null,
       gridHeight: 10,
       gridWidth: 11,
+      draw: false,
       connectWhat: 6,
       moves: [
         {

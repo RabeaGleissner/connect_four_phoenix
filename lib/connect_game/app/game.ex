@@ -9,6 +9,7 @@ defmodule ConnectGame.App.Game do
   schema "games" do
     field :ended, :boolean, default: false
     field :winner, :string
+    field :draw, :boolean, virtual: true
     has_many :moves, ConnectGame.App.Move
 
     timestamps()
