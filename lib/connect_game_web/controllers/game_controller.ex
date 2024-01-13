@@ -3,7 +3,6 @@ defmodule ConnectGameWeb.GameController do
 
   alias ConnectGame.App
   alias ConnectGame.App.Game
-  alias ConnectGame.App.Move
   alias ConnectGame.App.Rules
 
   def index(conn, _params) do
@@ -52,11 +51,12 @@ defmodule ConnectGameWeb.GameController do
       |> render("move_creation_error.json", %{message: "Game over! Not allowed to create a move."})
       |> Plug.Conn.halt()
     else
-      transformed_moves = Move.transform(game.moves)
-
-      {:ok, current_player} = ConnectFour.next_player_turn(transformed_moves)
-
-      {x_coordinate, y_coordinate} = ConnectFour.next_slot_in_column(column, transformed_moves)
+      {:ok,
+       %{
+         coordinates: {x_coordinate, y_coordinate},
+         current_player: current_player,
+         game_state: game_state
+       }} = Rules.handle_move(game, column, game_config())
 
       {:ok, _move} =
         App.create_move(%{
@@ -65,17 +65,6 @@ defmodule ConnectGameWeb.GameController do
           player: Atom.to_string(current_player),
           game: game
         })
-
-      game_state =
-        ConnectFour.game_state(
-          moves: [{current_player, {x_coordinate, y_coordinate}} | transformed_moves],
-          current_player: [player_id: current_player, current_move: {x_coordinate, y_coordinate}],
-          config: [
-            connect_what: Game.connect_what(),
-            grid_height: Game.grid_height(),
-            grid_width: Game.grid_width()
-          ]
-        )
 
       {:ok, game} =
         case game_state do
@@ -91,5 +80,13 @@ defmodule ConnectGameWeb.GameController do
 
       render(conn, "show.json", game: game)
     end
+  end
+
+  defp game_config do
+    [
+      connect_what: Game.connect_what(),
+      grid_height: Game.grid_height(),
+      grid_width: Game.grid_width()
+    ]
   end
 end
