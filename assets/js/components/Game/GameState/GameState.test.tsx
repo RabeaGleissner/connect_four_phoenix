@@ -19,4 +19,22 @@ describe("GameState", () => {
     expect(screen.getByText(/Game over! It's a draw./)).toBeInTheDocument();
     expect(screen.queryByText(/Player/)).not.toBeInTheDocument();
   });
+
+  it("shows which player goes next", () => {
+    render(<GameState winner={null} draw={false} currentPlayer={"red"} />);
+
+    expect(screen.getByText(/Next player: red/)).toBeInTheDocument();
+  });
+
+  it("does not show next player indicator when game is draw", () => {
+    render(<GameState winner={null} draw={true} currentPlayer={"red"} />);
+
+    expect(screen.queryByText(/Next player: red/)).not.toBeInTheDocument();
+  });
+
+  it("does not show next player indicator when game has winner", () => {
+    render(<GameState winner="yellow" draw={false} currentPlayer={"red"} />);
+
+    expect(screen.queryByText(/Next player: red/)).not.toBeInTheDocument();
+  });
 });

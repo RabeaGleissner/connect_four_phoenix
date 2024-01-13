@@ -33,6 +33,7 @@ defmodule ConnectGameWeb.GameViewTest do
       winner: nil,
       ended: false,
       draw: false,
+      current_player: "red",
       moves: [
         %Move{
           id: "9",
@@ -54,7 +55,8 @@ defmodule ConnectGameWeb.GameViewTest do
                grid_height: 6,
                grid_width: 7,
                moves: [%{id: "9", y_coordinate: 1, x_coordinate: 2, player: "yellow"}],
-               draw: false
+               draw: false,
+               current_player: "red"
              }
            }
   end

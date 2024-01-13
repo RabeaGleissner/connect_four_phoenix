@@ -79,6 +79,7 @@ defmodule ConnectGameWeb.GameControllerTest do
       assert json_response(conn, 200)["data"]["grid_width"] == Game.grid_width()
       assert json_response(conn, 200)["data"]["connect_what"] == Game.connect_what()
       assert json_response(conn, 200)["data"]["draw"] == false
+      assert json_response(conn, 200)["data"]["current_player"] == "one"
     end
 
     test "with moves", %{conn: conn} do
@@ -105,6 +106,7 @@ defmodule ConnectGameWeb.GameControllerTest do
       assert decode_json_data(conn)["id"] == game.id
       assert decode_json_data(conn)["ended"] == false
       assert decode_json_data(conn)["winner"] == nil
+      assert decode_json_data(conn)["current_player"] == "one"
 
       returned_moves = decode_json_data(conn)["moves"]
       assert length(returned_moves) == 2

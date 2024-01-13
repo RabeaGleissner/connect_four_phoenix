@@ -24,22 +24,12 @@ const Column = ({
             key={`${rowIndex}${index}`}
           >
             <Coin
-              colour={playerToColour(
-                columnMoves[rowIndex] && columnMoves[rowIndex].player
-              )}
+              colour={columnMoves[rowIndex] && columnMoves[rowIndex].player}
             />
           </Slot>
         ))}
     </ul>
   );
-};
-
-const playerToColour = (player: string) => {
-  const colours: Record<string, string> = {
-    one: "yellow",
-    two: "red",
-  };
-  return colours[player];
 };
 
 export default Column;

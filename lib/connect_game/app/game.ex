@@ -10,6 +10,7 @@ defmodule ConnectGame.App.Game do
     field :ended, :boolean, default: false
     field :winner, :string
     field :draw, :boolean, virtual: true
+    field :current_player, :string, virtual: true
     has_many :moves, ConnectGame.App.Move
 
     timestamps()

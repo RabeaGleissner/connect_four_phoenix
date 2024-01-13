@@ -19,9 +19,7 @@ defmodule ConnectGameWeb.GameController do
   end
 
   def show(conn, %{"id" => id}) do
-    game =
-      id
-      |> App.get_game!()
+    game = get_game_for_view(id)
 
     render(conn, "show.html",
       game: game,
@@ -31,13 +29,9 @@ defmodule ConnectGameWeb.GameController do
   end
 
   def show_api(conn, %{"id" => id}) do
-    game =
-      id
-      |> App.get_game!()
+    game = get_game_for_view(id)
 
-    drawn_game = struct(game, %{draw: Rules.is_drawn?(game)})
-
-    render(conn, "show.json", game: drawn_game)
+    render(conn, "show.json", game: game)
   end
 
   def create_move_api(conn, params) do
@@ -77,10 +71,24 @@ defmodule ConnectGameWeb.GameController do
           true
       end
 
-      game = App.get_game!(id)
+      game = get_game_for_view(id)
 
       render(conn, "show.json", game: game)
     end
+  end
+
+  defp get_game_for_view(id) do
+    game =
+      id
+      |> App.get_game!()
+
+    game_with_extra_information =
+      struct(game, %{
+        draw: Rules.is_drawn?(game),
+        current_player: Rules.current_player(game.moves)
+      })
+
+    game_with_extra_information
   end
 
   defp game_config do

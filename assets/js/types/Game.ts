@@ -9,4 +9,5 @@ export interface Game {
   gridWidth: number;
   connectWhat: number;
   draw: boolean;
+  currentPlayer: Player;
 }

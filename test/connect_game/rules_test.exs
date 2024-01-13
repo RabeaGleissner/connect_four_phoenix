@@ -6,7 +6,7 @@ defmodule ConnectGame.RulesTest do
 
   import ConnectGame.AppFixtures
 
-  describe "Rules" do
+  describe "Rules.handle_move" do
     test "returns error if the game has ended" do
       game = game_fixture(%{ended: true, winner: nil})
 
@@ -83,6 +83,16 @@ defmodule ConnectGame.RulesTest do
       assert game_state == {:won, [winner_id: :two]}
     end
 
+    defp default_game_config do
+      [
+        connect_what: Game.connect_what(),
+        grid_height: Game.grid_height(),
+        grid_width: Game.grid_width()
+      ]
+    end
+  end
+
+  describe "Rules.is_drawn?" do
     test "a game has ended with a draw" do
       game = game_fixture(%{ended: true, winner: nil})
 
@@ -100,11 +110,14 @@ defmodule ConnectGame.RulesTest do
     end
   end
 
-  defp default_game_config do
-    [
-      connect_what: Game.connect_what(),
-      grid_height: Game.grid_height(),
-      grid_width: Game.grid_width()
-    ]
+  describe "Rules.current_player" do
+    test "gets the next player based on given moves" do
+      current_player =
+        Rules.current_player([
+          %Move{id: 39, x_coordinate: 0, y_coordinate: 3, player: "one", game_id: 124}
+        ])
+
+      assert current_player == :two
+    end
   end
 end

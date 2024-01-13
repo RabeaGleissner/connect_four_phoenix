@@ -24,4 +24,9 @@ defmodule ConnectGame.App.Rules do
   def is_drawn?(%Game{ended: ended, winner: winner}) do
     ended && !winner
   end
+
+  def current_player(moves) do
+    {:ok, current_player} = ConnectFour.next_player_turn(Move.transform(moves))
+    current_player
+  end
 end

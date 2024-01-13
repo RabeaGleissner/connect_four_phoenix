@@ -9,6 +9,7 @@ const Game = () => {
   const gameId = getGameId(window.location.pathname);
   const [game, setGame] = useState<Game>();
   const { loading, error } = useGetGame(gameId, setGame);
+  console.log("game", game);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Apologies! Something went wrong.</div>;
@@ -16,7 +17,11 @@ const Game = () => {
   return (
     <>
       <div className="h-10">
-        <GameState winner={game!.winner} draw={game!.draw} />
+        <GameState
+          winner={game!.winner}
+          draw={game!.draw}
+          currentPlayer={game!.currentPlayer}
+        />
       </div>
       <Grid
         originalMoves={game!.moves}

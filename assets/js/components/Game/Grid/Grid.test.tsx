@@ -38,9 +38,9 @@ describe(Grid, () => {
     const gridWidth = 2;
     const gridHeight = 5;
     const moves: Move[] = [
-      { id: 1, xCoordinate: 0, yCoordinate: 0, player: "one" },
-      { id: 2, xCoordinate: 1, yCoordinate: 0, player: "two" },
-      { id: 3, xCoordinate: 2, yCoordinate: 0, player: "one" },
+      { id: 1, xCoordinate: 0, yCoordinate: 0, player: "yellow" },
+      { id: 2, xCoordinate: 1, yCoordinate: 0, player: "red" },
+      { id: 3, xCoordinate: 2, yCoordinate: 0, player: "yellow" },
     ];
     render(
       <Grid

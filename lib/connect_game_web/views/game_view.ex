@@ -25,7 +25,8 @@ defmodule ConnectGameWeb.GameView do
       grid_width: Game.grid_width(),
       grid_height: Game.grid_height(),
       connect_what: Game.connect_what(),
-      draw: game.draw
+      draw: game.draw,
+      current_player: game.current_player
     }
   end
 end
