@@ -66,17 +66,18 @@ defmodule ConnectGameWeb.GameController do
           game: game
         })
 
-      {:ok, game} =
-        case game_state do
-          {:won, [winner_id: winner_id]} ->
-            App.update_game(game, %{ended: true, winner: Atom.to_string(winner_id)})
+      case game_state do
+        {:won, [winner_id: winner_id]} ->
+          App.update_game(game, %{ended: true, winner: Atom.to_string(winner_id)})
 
-          {:draw} ->
-            App.update_game(game, %{ended: true})
+        {:draw} ->
+          App.update_game(game, %{ended: true})
 
-          _ ->
-            {:ok, App.get_game!(id)}
-        end
+        _ ->
+          true
+      end
+
+      game = App.get_game!(id)
 
       render(conn, "show.json", game: game)
     end

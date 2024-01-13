@@ -4,10 +4,10 @@ import { transformGameData } from "../transformers/transformData";
 import { baseUrl } from "../config";
 
 export const useGetGame = (
-  gameId: string
-): { game?: Game; error: boolean; loading: boolean } => {
+  gameId: string,
+  setGame: (game: Game) => void
+): { originalGame?: Game; error: boolean; loading: boolean } => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [game, setGame] = useState<Game>();
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
@@ -23,5 +23,5 @@ export const useGetGame = (
       });
   }, [gameId]);
 
-  return { game, error, loading };
+  return { error, loading };
 };
