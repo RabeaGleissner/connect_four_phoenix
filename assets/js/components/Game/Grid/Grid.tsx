@@ -69,7 +69,7 @@ const Grid = ({
                 }`}
                 disabled={coinDropDisalbed}
               >
-                <p className="text-xl">⬇</p>️
+                <p className="text-xl">👇</p>️
               </button>
             </div>
             <Column

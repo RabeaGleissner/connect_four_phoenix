@@ -1,2 +1,13 @@
-<h1 class="mb-5">Game <%= @game.id %></h1>
-<div id="game-react-app"></div>
+<nav class="flex bg-white border-b border-gray-200 fixed top-0 inset-x-0 z-100 h-16 items-center shadow-md">
+  <div>
+    <%= link("🔙", to: Routes.game_path(@conn, :index), class: "ml-6 text-4xl no-underline") %>
+  </div>
+  <div class="flex items-center justify-center w-96">
+    <h1>Game <%= @game.id %></h1>
+  </div>
+</nav>
+<div class="mt-8 max-w-3xl p-10">
+  <div class="flex flex-col items-center">
+    <div id="game-react-app"></div>
+  </div>
+</div>
