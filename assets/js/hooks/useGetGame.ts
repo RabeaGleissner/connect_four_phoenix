@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Game } from "../types/Game";
 import { transformGameData } from "../transformers/transformData";
 import { baseUrl } from "../config";
+import getRequest from "../requests/getRequest";
 
 export const useGetGame = (
   gameId: string
@@ -11,16 +12,14 @@ export const useGetGame = (
   const [game, setGame] = useState<Game>();
 
   useEffect(() => {
-    fetch(`${baseUrl}${gameId}`)
-      .then((response) => response.json())
-      .then((json) => {
-        setGame(transformGameData(json.data));
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setError(error);
-      });
+    getRequest({
+      url: `${baseUrl}${gameId}`,
+      handleResponse: (data) => {
+        setGame(transformGameData(data));
+      },
+      setError,
+      setLoading,
+    });
   }, [gameId]);
 
   return { error, loading, game };

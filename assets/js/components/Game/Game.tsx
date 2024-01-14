@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Grid from "./Grid/Grid";
 import GameState from "./GameState/GameState";
 import { Game } from "../../types/Game";
@@ -25,12 +25,12 @@ const Game = ({ game }: GameProps) => {
         originalMoves={game!.moves}
         gridHeight={game!.gridHeight}
         gridWidth={game!.gridWidth}
+        gameId={game!.id}
+        ended={gameEnded}
         setGameEnded={setGameEnded}
         setWinner={setWinner}
         setDraw={setDraw}
         setCurrentPlayer={setCurrentPlayer}
-        gameId={game!.id}
-        ended={gameEnded}
       />
     </>
   );

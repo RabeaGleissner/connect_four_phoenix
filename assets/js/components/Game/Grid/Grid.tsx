@@ -6,6 +6,8 @@ import rangeUpTo from "../../../utils/rangeUpTo";
 import { transformGameData } from "../../../transformers/transformData";
 import Column from "./Colum";
 import CoinDropButton from "./CoinDropButton";
+import getRequest from "../../../requests/getRequest";
+import postRequest from "../../../requests/postRequest";
 
 export type GridProps = Pick<Game, "gridWidth" | "gridHeight" | "ended"> & {
   gameId: Game["id"];
@@ -32,15 +34,11 @@ const Grid = ({
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleCoinDrop = (colIndex: number) => {
-    setLoading(true);
-    fetch(`${baseUrl}${gameId}/move`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ column: colIndex }),
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        const game = transformGameData(json.data);
+    postRequest({
+      url: `${baseUrl}${gameId}/move`,
+      requestBody: { column: colIndex },
+      handleResponse: (data) => {
+        const game = transformGameData(data);
         setMoves(game.moves);
         setGameEnded(game.ended);
         setDraw(game.draw);
@@ -48,12 +46,10 @@ const Grid = ({
         if (game.winner) {
           setWinner(game.winner);
         }
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setError(error);
-      });
+      },
+      setLoading,
+      setError,
+    });
   };
 
   const columns = useMemo<number[]>(() => rangeUpTo(gridWidth), [gridWidth]);

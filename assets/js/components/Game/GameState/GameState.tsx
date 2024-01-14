@@ -2,8 +2,8 @@ import React from "react";
 import { Game } from "../../../types/Game";
 import Coin from "../Grid/Coin";
 
-type GameStateProps = Pick<Game, "winner" | "draw" | "ended"> & {
-  currentPlayer?: Player;
+export type GameStateProps = Pick<Game, "winner" | "draw" | "ended"> & {
+  currentPlayer: Player;
 };
 
 const GameState = ({ ended, winner, draw, currentPlayer }: GameStateProps) => {
@@ -11,7 +11,7 @@ const GameState = ({ ended, winner, draw, currentPlayer }: GameStateProps) => {
     <div className="h-10">
       {winner && <p>✨ Game over! Player "{winner}" wins. 🏆</p>}
       {draw && <p>✨ Game over! It's a draw. ✨</p>}
-      {!ended && currentPlayer && (
+      {!ended && (
         <div className="flex">
           <p>Next player: {currentPlayer}</p>
           <Coin small colour={currentPlayer} />
