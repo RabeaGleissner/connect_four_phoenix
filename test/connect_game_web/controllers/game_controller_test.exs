@@ -9,14 +9,14 @@ defmodule ConnectGameWeb.GameControllerTest do
     test "renders homepage with play button", %{conn: conn} do
       conn = get(conn, "/")
 
-      assert html_response(conn, 200) =~ "Play a new game"
+      assert html_response(conn, 200) =~ "Connect"
 
       start_button_text =
         html_response(conn, 200)
         |> Floki.find("button[type='submit']")
         |> Floki.text()
 
-      assert start_button_text == "Start"
+      assert start_button_text == "Play"
     end
 
     test "does not list games when there are none", %{conn: conn} do
