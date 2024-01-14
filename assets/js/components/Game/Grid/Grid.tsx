@@ -5,6 +5,7 @@ import Column from "./Colum";
 import { transformGameData } from "../../../transformers/transformData";
 import { baseUrl } from "../../../config";
 import { Game } from "../../../types/Game";
+import CoinDropButton from "./CoinDropButton";
 
 export type GridProps = Pick<Game, "gridWidth" | "gridHeight" | "ended"> & {
   gameId: Game["id"];
@@ -48,41 +49,34 @@ const Grid = ({
     loading || ended || isColumnFull(colIndex);
 
   const isColumnFull = (colIndex: number) =>
-    movesForColumn(moves, colIndex).length >= gridHeight;
+    movesForColumn(colIndex).length >= gridHeight;
 
-  const movesForColumn = (moves: Move[], columnIndex: number) =>
+  const movesForColumn = (columnIndex: number) =>
     moves.filter((move) => move.yCoordinate === columnIndex);
 
   return (
     <>
       <div className="h-5">
-        {error ? (
+        {error && (
           <p className="text-red-500 ">
             ️😱 an error happened during your coin drop
           </p>
-        ) : (
-          <p>Please choose a column to drop a coin</p>
         )}
+        {!ended && <p>Please choose a column to drop a coin</p>}
       </div>
       <div className="flex mt-5">
         {rangeUpTo(gridWidth).map((colIndex) => (
           <div key={colIndex}>
             <div className="mb-2">
-              <button
-                aria-label="Drop coin in column"
-                onClick={() => handleCoinDrop(colIndex)}
-                className={`cursor-pointer w-20 h-10 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow ${
-                  isCoinDropDisabled(colIndex) && "cursor-not-allowed"
-                }`}
-                disabled={isCoinDropDisabled(colIndex)}
-              >
-                <p className="text-xl">👇</p>️
-              </button>
+              <CoinDropButton
+                handleCoinDrop={() => handleCoinDrop(colIndex)}
+                isDisabled={isCoinDropDisabled(colIndex)}
+              />
             </div>
             <Column
               height={gridHeight}
               index={colIndex}
-              columnMoves={movesForColumn(moves, colIndex)}
+              columnMoves={movesForColumn(colIndex)}
             />
           </div>
         ))}

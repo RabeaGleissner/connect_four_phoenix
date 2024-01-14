@@ -10,8 +10,8 @@ const GameState = ({ winner, draw, currentPlayer }: GameStateProps) => {
   const gameOver = winner || draw;
   return (
     <>
-      {winner && <p>Game over! Player "{winner}" wins. </p>}
-      {draw && <p>Game over! It's a draw.</p>}
+      {winner && <p>✨ Game over! Player "{winner}" wins. 🏆</p>}
+      {draw && <p>✨ Game over! It's a draw. ✨</p>}
       {!gameOver && currentPlayer && (
         <div className="flex">
           <p>Next player: {currentPlayer}</p>
