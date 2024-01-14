@@ -1,46 +1,39 @@
 import React, { useEffect, useState } from "react";
 import Grid from "./Grid/Grid";
-import getGameId from "../../utils/getGameId";
-import { useGetGame } from "../../hooks/useGetGame";
 import GameState from "./GameState/GameState";
 import { Game } from "../../types/Game";
 
-const Game = () => {
-  const gameId = getGameId(window.location.pathname);
-  const { loading, error, game } = useGetGame(gameId);
-  const [gameEnded, setGameEnded] = useState<boolean>(false);
-  const [winner, setWinner] = useState<Player | null>(null);
-  const [draw, setDraw] = useState(false);
+interface GameProps {
+  game: Game;
+}
 
-  console.log("game", game);
+const Game = ({ game }: GameProps) => {
+  const [gameEnded, setGameEnded] = useState<boolean>(game.ended);
+  const [winner, setWinner] = useState<Player | null>(game.winner);
+  const [draw, setDraw] = useState(game.draw);
+  const [currentPlayer, setCurrentPlayer] = useState(game.currentPlayer);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Apologies! Something went wrong.</div>;
-
-  if (game) {
-    return (
-      <>
-        <div className="h-10">
-          <GameState
-            ended={gameEnded}
-            winner={winner}
-            draw={draw}
-            currentPlayer={game!.currentPlayer}
-          />
-        </div>
-        <Grid
-          originalMoves={game!.moves}
-          gridHeight={game!.gridHeight}
-          gridWidth={game!.gridWidth}
-          setGameEnded={setGameEnded}
-          setWinner={setWinner}
-          setDraw={setDraw}
-          gameId={game!.id}
-          ended={gameEnded}
-        />
-      </>
-    );
-  }
+  return (
+    <>
+      <GameState
+        ended={gameEnded}
+        winner={winner}
+        draw={draw}
+        currentPlayer={currentPlayer}
+      />
+      <Grid
+        originalMoves={game!.moves}
+        gridHeight={game!.gridHeight}
+        gridWidth={game!.gridWidth}
+        setGameEnded={setGameEnded}
+        setWinner={setWinner}
+        setDraw={setDraw}
+        setCurrentPlayer={setCurrentPlayer}
+        gameId={game!.id}
+        ended={gameEnded}
+      />
+    </>
+  );
 };
 
 export default Game;

@@ -17,6 +17,7 @@ describe(Grid, () => {
     setGameEnded: jest.fn,
     setWinner: jest.fn,
     setDraw: jest.fn,
+    setCurrentPlayer: jest.fn,
   };
 
   it("renders empty grid when there are no moves", () => {

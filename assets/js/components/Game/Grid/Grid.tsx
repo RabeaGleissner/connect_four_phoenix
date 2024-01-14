@@ -13,6 +13,7 @@ export type GridProps = Pick<Game, "gridWidth" | "gridHeight" | "ended"> & {
   setGameEnded: (ended: boolean) => void;
   setWinner: (player: Player) => void;
   setDraw: (draw: boolean) => void;
+  setCurrentPlayer: (player: Player) => void;
 };
 
 const Grid = ({
@@ -24,6 +25,7 @@ const Grid = ({
   setGameEnded,
   setDraw,
   setWinner,
+  setCurrentPlayer,
 }: GridProps) => {
   const [moves, setMoves] = useState<Move[]>(originalMoves);
   const [error, setError] = useState<boolean>(false);
@@ -42,6 +44,7 @@ const Grid = ({
         setMoves(game.moves);
         setGameEnded(game.ended);
         setDraw(game.draw);
+        setCurrentPlayer(game.currentPlayer);
         if (game.winner) {
           setWinner(game.winner);
         }

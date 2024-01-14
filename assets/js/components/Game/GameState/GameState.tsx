@@ -8,7 +8,7 @@ type GameStateProps = Pick<Game, "winner" | "draw" | "ended"> & {
 
 const GameState = ({ ended, winner, draw, currentPlayer }: GameStateProps) => {
   return (
-    <>
+    <div className="h-10">
       {winner && <p>✨ Game over! Player "{winner}" wins. 🏆</p>}
       {draw && <p>✨ Game over! It's a draw. ✨</p>}
       {!ended && currentPlayer && (
@@ -17,7 +17,7 @@ const GameState = ({ ended, winner, draw, currentPlayer }: GameStateProps) => {
           <Coin small colour={currentPlayer} />
         </div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -1,9 +1,9 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 
-import Game from "./components/Game/Game";
+import GameContainer from "./components/Game/GameContainer";
 
 export default function renderGame(container: ReactDOM.Container) {
   const root = createRoot(container as Element);
-  root.render(<Game />);
+  root.render(<GameContainer />);
 }
