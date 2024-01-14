@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Move } from "../../../types/Move";
-import rangeUpTo from "../../../utils/rangeUpTo";
-import Column from "./Colum";
-import { transformGameData } from "../../../transformers/transformData";
-import { baseUrl } from "../../../config";
 import { Game } from "../../../types/Game";
+import { baseUrl } from "../../../config";
+import rangeUpTo from "../../../utils/rangeUpTo";
+import { transformGameData } from "../../../transformers/transformData";
+import Column from "./Colum";
 import CoinDropButton from "./CoinDropButton";
 
 export type GridProps = Pick<Game, "gridWidth" | "gridHeight" | "ended"> & {
   gameId: Game["id"];
   originalMoves: Game["moves"];
-  setGame: (game: any) => void;
+  setGameEnded: (ended: boolean) => void;
+  setWinner: (player: Player) => void;
+  setDraw: (draw: boolean) => void;
 };
 
 const Grid = ({
@@ -19,7 +21,9 @@ const Grid = ({
   gridHeight,
   gameId,
   ended,
-  setGame,
+  setGameEnded,
+  setDraw,
+  setWinner,
 }: GridProps) => {
   const [moves, setMoves] = useState<Move[]>(originalMoves);
   const [error, setError] = useState<boolean>(false);
@@ -36,7 +40,11 @@ const Grid = ({
       .then((json) => {
         const game = transformGameData(json.data);
         setMoves(game.moves);
-        setGame(game);
+        setGameEnded(game.ended);
+        setDraw(game.draw);
+        if (game.winner) {
+          setWinner(game.winner);
+        }
         setLoading(false);
       })
       .catch((error) => {
@@ -45,14 +53,17 @@ const Grid = ({
       });
   };
 
-  const isCoinDropDisabled = (colIndex: number): boolean =>
-    loading || ended || isColumnFull(colIndex);
-
-  const isColumnFull = (colIndex: number) =>
-    movesForColumn(colIndex).length >= gridHeight;
+  const columns = useMemo<number[]>(() => rangeUpTo(gridWidth), [gridWidth]);
+  const slotsForColumn = useMemo<number[]>(
+    () => rangeUpTo(gridHeight).reverse(),
+    [gridHeight]
+  );
 
   const movesForColumn = (columnIndex: number) =>
     moves.filter((move) => move.yCoordinate === columnIndex);
+
+  const isCoinDropDisabled = (colIndex: number): boolean =>
+    ended || movesForColumn(colIndex).length >= gridHeight;
 
   return (
     <>
@@ -65,16 +76,17 @@ const Grid = ({
         {!ended && <p>Please choose a column to drop a coin</p>}
       </div>
       <div className="flex mt-5">
-        {rangeUpTo(gridWidth).map((colIndex) => (
+        {columns.map((colIndex) => (
           <div key={colIndex}>
             <div className="mb-2">
               <CoinDropButton
                 handleCoinDrop={() => handleCoinDrop(colIndex)}
                 isDisabled={isCoinDropDisabled(colIndex)}
+                loading={loading}
               />
             </div>
             <Column
-              height={gridHeight}
+              slots={slotsForColumn}
               index={colIndex}
               columnMoves={movesForColumn(colIndex)}
             />

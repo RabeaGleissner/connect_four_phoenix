@@ -1,33 +1,24 @@
 import React from "react";
 import { Move } from "../../../types/Move";
-import rangeUpTo from "../../../utils/rangeUpTo";
 import Slot from "./Slot";
 import Coin from "./Coin";
 
 const Column = ({
-  height,
+  slots,
   index,
   columnMoves,
 }: {
-  height: number;
+  slots: number[];
   index: number;
   columnMoves: Move[];
 }) => {
   return (
     <ul>
-      {rangeUpTo(height)
-        .reverse()
-        .map((rowIndex) => (
-          <Slot
-            data-x-coord={rowIndex}
-            data-y-coord={index}
-            key={`${rowIndex}${index}`}
-          >
-            <Coin
-              colour={columnMoves[rowIndex] && columnMoves[rowIndex].player}
-            />
-          </Slot>
-        ))}
+      {slots.map((slot) => (
+        <Slot data-x-coord={slot} data-y-coord={index} key={`${slot}${index}`}>
+          <Coin colour={columnMoves[slot] && columnMoves[slot].player} />
+        </Slot>
+      ))}
     </ul>
   );
 };
