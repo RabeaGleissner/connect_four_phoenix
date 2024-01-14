@@ -44,7 +44,12 @@ const Grid = ({
       });
   };
 
-  const coinDropDisalbed = loading || ended;
+  const coinDropDisalbed = (colIndex: number): boolean => {
+    return loading || ended || isColumnFull(colIndex);
+  };
+
+  const isColumnFull = (colIndex: number) =>
+    movesForColumn(moves, colIndex).length >= gridHeight;
 
   return (
     <>
@@ -65,9 +70,9 @@ const Grid = ({
                 aria-label="Drop coin in column"
                 onClick={() => handleCoinDrop(colIndex)}
                 className={`cursor-pointer w-20 h-10 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow ${
-                  coinDropDisalbed && "cursor-not-allowed"
+                  coinDropDisalbed(colIndex) && "cursor-not-allowed"
                 }`}
-                disabled={coinDropDisalbed}
+                disabled={coinDropDisalbed(colIndex)}
               >
                 <p className="text-xl">👇</p>️
               </button>

@@ -82,4 +82,27 @@ describe(Grid, () => {
       expect(button).toBeDisabled();
     });
   });
+
+  it("disables coin drop button when column is full", () => {
+    const moves: Move[] = [
+      { id: 1, xCoordinate: 0, yCoordinate: 0, player: "yellow" },
+      { id: 1, xCoordinate: 1, yCoordinate: 0, player: "red" },
+      { id: 1, xCoordinate: 0, yCoordinate: 1, player: "yellow" },
+    ];
+
+    render(
+      <Grid
+        {...commonGridProps}
+        originalMoves={moves}
+        gridHeight={2}
+        gridWidth={2}
+      />
+    );
+
+    const buttons = screen.getAllByLabelText("Drop coin in column");
+    expect(buttons).toHaveLength(2);
+
+    expect(buttons[0]).toBeDisabled();
+    expect(buttons[1]).not.toBeDisabled();
+  });
 });
