@@ -1,4 +1,5 @@
 defmodule ConnectGame.App do
+  alias ConnectGame.App.Rules
   alias ConnectGame.App.Game
 
   @moduledoc """
@@ -40,6 +41,34 @@ defmodule ConnectGame.App do
   def get_game!(id) do
     Repo.get!(Game, id)
     |> Repo.preload(:moves)
+  end
+
+  @doc """
+  Gets a single game including the virtual fields on the Game struct.
+
+  Raises `Ecto.NoResultsError` if the Game does not exist.
+
+  ## Examples
+
+      iex> get_game_for_view!(123)
+      %Game{}
+
+      iex> get_game_for_view!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_game_for_view!(id) do
+    game =
+      id
+      |> get_game!()
+
+    game_with_virtual_fields =
+      struct(game, %{
+        draw: Rules.is_drawn?(game),
+        current_player: Rules.current_player(game.moves)
+      })
+
+    game_with_virtual_fields
   end
 
   @doc """
@@ -153,7 +182,7 @@ defmodule ConnectGame.App do
 
   """
   def get_last_move_for_game!(game_id) do
-    Move |> where(game_id: ^game_id) |> last(:inserted_at) |> Repo.one
+    Move |> where(game_id: ^game_id) |> last(:inserted_at) |> Repo.one()
   end
 
   @doc """
@@ -170,6 +199,7 @@ defmodule ConnectGame.App do
   """
   def create_move(attrs \\ %{}) do
     {game, move_attrs} = Map.pop(attrs, :game)
+
     %Move{}
     |> Move.changeset(move_attrs)
     |> Ecto.Changeset.put_assoc(:game, game)

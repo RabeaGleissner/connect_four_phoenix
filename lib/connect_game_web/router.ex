@@ -25,8 +25,8 @@ defmodule ConnectGameWeb.Router do
   scope "/api", ConnectGameWeb do
     pipe_through :api
 
-    get "/games/:id", GameController, :show_api
-    post "/games/:id/move", GameController, :create_move_api
+    get "/games/:id", GameApiController, :show
+    post "/games/:id/move", GameApiController, :create_move
   end
 
   # Enables LiveDashboard only for development
