@@ -44,12 +44,14 @@ const Grid = ({
       });
   };
 
-  const coinDropDisalbed = (colIndex: number): boolean => {
-    return loading || ended || isColumnFull(colIndex);
-  };
+  const isCoinDropDisabled = (colIndex: number): boolean =>
+    loading || ended || isColumnFull(colIndex);
 
   const isColumnFull = (colIndex: number) =>
     movesForColumn(moves, colIndex).length >= gridHeight;
+
+  const movesForColumn = (moves: Move[], columnIndex: number) =>
+    moves.filter((move) => move.yCoordinate === columnIndex);
 
   return (
     <>
@@ -70,9 +72,9 @@ const Grid = ({
                 aria-label="Drop coin in column"
                 onClick={() => handleCoinDrop(colIndex)}
                 className={`cursor-pointer w-20 h-10 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-2 border border-gray-400 rounded shadow ${
-                  coinDropDisalbed(colIndex) && "cursor-not-allowed"
+                  isCoinDropDisabled(colIndex) && "cursor-not-allowed"
                 }`}
-                disabled={coinDropDisalbed(colIndex)}
+                disabled={isCoinDropDisabled(colIndex)}
               >
                 <p className="text-xl">👇</p>️
               </button>
@@ -87,10 +89,6 @@ const Grid = ({
       </div>
     </>
   );
-};
-
-const movesForColumn = (moves: Move[], columnIndex: number) => {
-  return moves.filter((move) => move.yCoordinate === columnIndex);
 };
 
 export default Grid;
