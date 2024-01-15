@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { Dispatch, useMemo, useState } from "react";
 import { Move } from "../../types/Move";
 import { Game } from "../../types/Game";
 import { baseUrl } from "../../config";
@@ -7,14 +7,12 @@ import { transformGameData } from "../../transformers/transformData";
 import Column from "./Colum";
 import CoinDropButton from "./CoinDropButton";
 import request from "../../utils/request";
+import { UPDATE_GAME_STATE } from "../../reducers/gameStateReducer";
 
 export type GridProps = Pick<Game, "gridWidth" | "gridHeight" | "ended"> & {
   gameId: Game["id"];
   originalMoves: Game["moves"];
-  setGameEnded: (ended: boolean) => void;
-  setWinner: (player: Player) => void;
-  setDraw: (draw: boolean) => void;
-  setCurrentPlayer: (player: Player) => void;
+  dispatch: Dispatch<UPDATE_GAME_STATE>;
 };
 
 const Grid = ({
@@ -23,10 +21,7 @@ const Grid = ({
   gridHeight,
   gameId,
   ended,
-  setGameEnded,
-  setDraw,
-  setWinner,
-  setCurrentPlayer,
+  dispatch,
 }: GridProps) => {
   const [moves, setMoves] = useState<Move[]>(originalMoves);
   const [error, setError] = useState<boolean>(false);
@@ -37,14 +32,18 @@ const Grid = ({
       url: `${baseUrl}${gameId}/move`,
       requestBody: { column: colIndex },
       handleResponse: (data) => {
-        const game = transformGameData(data);
-        setMoves(game.moves);
-        setGameEnded(game.ended);
-        setDraw(game.draw);
-        setCurrentPlayer(game.currentPlayer);
-        if (game.winner) {
-          setWinner(game.winner);
-        }
+        const { moves, ended, draw, currentPlayer, winner } =
+          transformGameData(data);
+        setMoves(moves);
+        dispatch({
+          type: "UPDATE_GAME_STATE",
+          payload: {
+            winner: winner && winner,
+            currentPlayer,
+            ended,
+            draw,
+          },
+        });
       },
       setLoading,
       setError,
@@ -58,7 +57,7 @@ const Grid = ({
   );
 
   const movesForColumn = (columnIndex: number) =>
-    moves.filter((move) => move.yCoordinate === columnIndex);
+    moves.filter(({ yCoordinate }) => yCoordinate === columnIndex);
 
   const isCoinDropDisabled = (colIndex: number): boolean =>
     ended || movesForColumn(colIndex).length >= gridHeight;
