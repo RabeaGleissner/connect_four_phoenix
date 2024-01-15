@@ -1,4 +1,4 @@
-const postRequest = ({
+const request = ({
   url,
   requestBody,
   handleResponse,
@@ -6,16 +6,18 @@ const postRequest = ({
   setError,
 }: {
   url: string;
-  requestBody: Record<string, any>;
+  requestBody?: Record<string, any>;
   handleResponse: (data: Record<string, string>) => void;
   setLoading: (state: boolean) => void;
   setError: (state: boolean) => void;
 }) => {
   setLoading(true);
   fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(requestBody),
+    ...(requestBody && {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestBody),
+    }),
   })
     .then((response) => response.json())
     .then((json) => {
@@ -28,4 +30,4 @@ const postRequest = ({
     });
 };
 
-export default postRequest;
+export default request;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Game } from "../types/Game";
 import { transformGameData } from "../transformers/transformData";
 import { baseUrl } from "../config";
-import getRequest from "../requests/getRequest";
+import request from "../utils/request";
 
 export const useGetGame = (
   gameId: string
@@ -12,7 +12,7 @@ export const useGetGame = (
   const [game, setGame] = useState<Game>();
 
   useEffect(() => {
-    getRequest({
+    request({
       url: `${baseUrl}${gameId}`,
       handleResponse: (data) => {
         setGame(transformGameData(data));

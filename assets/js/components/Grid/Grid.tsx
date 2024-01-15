@@ -6,7 +6,7 @@ import rangeUpTo from "../../utils/rangeUpTo";
 import { transformGameData } from "../../transformers/transformData";
 import Column from "./Colum";
 import CoinDropButton from "./CoinDropButton";
-import postRequest from "../../requests/postRequest";
+import request from "../../utils/request";
 
 export type GridProps = Pick<Game, "gridWidth" | "gridHeight" | "ended"> & {
   gameId: Game["id"];
@@ -33,7 +33,7 @@ const Grid = ({
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleCoinDrop = (colIndex: number) => {
-    postRequest({
+    request({
       url: `${baseUrl}${gameId}/move`,
       requestBody: { column: colIndex },
       handleResponse: (data) => {
