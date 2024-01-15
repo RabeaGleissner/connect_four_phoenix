@@ -10,8 +10,6 @@ const GameContainer = () => {
   if (error) return <div>Apologies! Something went wrong.</div>;
   if (loading) return <div>Loading...</div>;
 
-  console.log("game", game);
-
   return <Game game={game!} />;
 };
 

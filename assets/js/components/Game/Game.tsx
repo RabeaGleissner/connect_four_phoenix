@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Grid from "./Grid/Grid";
-import GameState from "./GameState/GameState";
+import Grid from "../Grid/Grid";
+import GameState from "../GameState/GameState";
 import { Game } from "../../types/Game";
 
 interface GameProps {

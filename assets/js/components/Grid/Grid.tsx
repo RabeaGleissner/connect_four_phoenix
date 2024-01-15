@@ -1,13 +1,12 @@
 import React, { useMemo, useState } from "react";
-import { Move } from "../../../types/Move";
-import { Game } from "../../../types/Game";
-import { baseUrl } from "../../../config";
-import rangeUpTo from "../../../utils/rangeUpTo";
-import { transformGameData } from "../../../transformers/transformData";
+import { Move } from "../../types/Move";
+import { Game } from "../../types/Game";
+import { baseUrl } from "../../config";
+import rangeUpTo from "../../utils/rangeUpTo";
+import { transformGameData } from "../../transformers/transformData";
 import Column from "./Colum";
 import CoinDropButton from "./CoinDropButton";
-import getRequest from "../../../requests/getRequest";
-import postRequest from "../../../requests/postRequest";
+import postRequest from "../../requests/postRequest";
 
 export type GridProps = Pick<Game, "gridWidth" | "gridHeight" | "ended"> & {
   gameId: Game["id"];

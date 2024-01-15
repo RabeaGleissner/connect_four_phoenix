@@ -1,5 +1,5 @@
 import React from "react";
-import { Game } from "../../../types/Game";
+import { Game } from "../../types/Game";
 import Coin from "../Grid/Coin";
 
 export type GameStateProps = Pick<Game, "winner" | "draw" | "ended"> & {

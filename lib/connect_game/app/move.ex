@@ -8,7 +8,6 @@ defmodule ConnectGame.App.Move do
     field :player, :string
     belongs_to :game, ConnectGame.App.Game, foreign_key: :game_id
 
-
     timestamps()
   end
 

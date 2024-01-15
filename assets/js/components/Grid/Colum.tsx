@@ -1,5 +1,5 @@
 import React from "react";
-import { Move } from "../../../types/Move";
+import { Move } from "../../types/Move";
 import Slot from "./Slot";
 import Coin from "./Coin";
 
