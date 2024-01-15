@@ -1,6 +1,7 @@
 # Connect Four Game
 
 A connect four game with an Elixir backend and a React frontend.
+Game logic powered by my [Connex Four](https://github.com/RabeaGleissner/connex_four) package.
 
 ## Local development setup
 
