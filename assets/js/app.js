@@ -47,4 +47,7 @@ liveSocket.connect();
 window.liveSocket = liveSocket;
 
 import renderGame from "./react-app";
-renderGame(document.getElementById("game-react-app"));
+const reactAppRoot = document.getElementById("game-react-app");
+if (reactAppRoot) {
+  renderGame(reactAppRoot);
+}
