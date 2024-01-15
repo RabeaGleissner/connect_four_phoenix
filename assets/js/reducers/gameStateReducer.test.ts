@@ -30,4 +30,29 @@ describe("game state reducer", () => {
 
     expect(newState).toStrictEqual(updatedState);
   });
+
+  it("returns existing state when called with unknown action", () => {
+    const initialState: GameStateReducerState = {
+      currentPlayer: "red",
+      draw: false,
+      winner: null,
+      ended: false,
+    };
+
+    const updatedState: UpdateGameStatePayload = {
+      currentPlayer: "yellow",
+      draw: false,
+      winner: "yellow",
+      ended: true,
+    };
+
+    const action = {
+      type: "UNKNOWN_ACTION",
+      payload: updatedState,
+    };
+
+    const newState = gameStateReducer(initialState, action as any);
+
+    expect(newState).toStrictEqual(initialState);
+  });
 });
