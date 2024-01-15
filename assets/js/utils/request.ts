@@ -7,7 +7,7 @@ const request = ({
 }: {
   url: string;
   requestBody?: Record<string, any>;
-  handleResponse: (data: Record<string, string>) => void;
+  handleResponse: (data: any) => void;
   setLoading: (state: boolean) => void;
   setError: (state: boolean) => void;
 }) => {

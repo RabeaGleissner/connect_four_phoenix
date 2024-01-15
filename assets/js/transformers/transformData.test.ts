@@ -1,8 +1,9 @@
+import { ApiGame } from "../types/api/ApiTypes";
 import { transformGameData } from "./transformData";
 
 describe("transform data for the UI", () => {
   it("transforms initial game data from API", () => {
-    const apiData = {
+    const apiData: ApiGame = {
       ended: false,
       id: 1,
       winner: null,
@@ -29,7 +30,7 @@ describe("transform data for the UI", () => {
   });
 
   it("transforms game data for winning game state", () => {
-    const apiData = {
+    const apiData: ApiGame = {
       ended: true,
       id: 1,
       winner: "one",

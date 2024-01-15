@@ -1,9 +1,8 @@
 import { Game } from "../types/Game";
 import { Move } from "../types/Move";
+import { ApiGame, ApiMove, ApiPlayer } from "../types/api/ApiTypes";
 
-type ApiPlayer = "one" | "two";
-
-export const transformGameData = (gameData: Record<string, any>): Game => ({
+export const transformGameData = (gameData: ApiGame): Game => ({
   id: gameData.id,
   moves: transformMoves(gameData.moves),
   winner: gameData.winner
@@ -17,7 +16,7 @@ export const transformGameData = (gameData: Record<string, any>): Game => ({
   currentPlayer: transformPlayerToColour(gameData.current_player),
 });
 
-const transformMoves = (moves: Record<string, any>[]): Move[] =>
+const transformMoves = (moves: ApiMove[]): Move[] =>
   moves.map((move) => ({
     id: move.id,
     xCoordinate: move.x_coordinate,
