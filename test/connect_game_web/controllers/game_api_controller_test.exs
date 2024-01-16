@@ -54,7 +54,9 @@ defmodule ConnectGameWeb.GameApiControllerTest do
       assert List.first(returned_moves)["x_coordinate"] == 0
       assert List.first(returned_moves)["y_coordinate"] == 0
     end
+  end
 
+  describe "creating moves" do
     test "creates move for existing game", %{conn: conn} do
       {:ok, game} = App.create_game(%{ended: false, winner: ""})
 
@@ -78,6 +80,11 @@ defmodule ConnectGameWeb.GameApiControllerTest do
 
       assert json_response(conn, 200)["data"]["ended"] == true
       assert json_response(conn, 200)["data"]["winner"] == "one"
+
+      updated_game = App.get_game!(game.id)
+
+      assert updated_game.ended == true
+      assert updated_game.winner == "one"
     end
 
     test "updates game in database when game is a draw", %{conn: conn} do
@@ -89,6 +96,12 @@ defmodule ConnectGameWeb.GameApiControllerTest do
 
       assert json_response(conn, 200)["data"]["ended"] == true
       assert json_response(conn, 200)["data"]["winner"] == nil
+      assert json_response(conn, 200)["data"]["draw"] == true
+
+      update_game = App.get_game!(game.id)
+
+      assert update_game.ended == true
+      assert update_game.winner == nil
     end
 
     test "does not allow move when game has ended", %{conn: conn} do
@@ -97,31 +110,75 @@ defmodule ConnectGameWeb.GameApiControllerTest do
 
       assert json_response(conn, 400)["error"] == "Game over! Not allowed to create a move."
     end
+  end
 
-    defp decode_json_data(conn) do
-      json_response(conn, 200)["data"]
+  describe "AI move action" do
+    test "creates a new move when there is space in all columns", %{conn: conn} do
+      {:ok, game} = App.create_game(%{ended: false, winner: ""})
+
+      conn = post(conn, Routes.game_api_path(conn, :create_ai_move, game.id))
+
+      moves = decode_json_data(conn)["moves"]
+      assert length(moves) == 1
+      assert List.last(moves)["player"] == "one"
+
+      assert decode_json_data(conn)["ended"] == false
+      assert decode_json_data(conn)["winner"] == nil
     end
 
-    defp create_move(game, x, y, player) do
-      {:ok, _} =
-        App.create_move(%{
-          x_coordinate: x,
-          y_coordinate: y,
-          player: Atom.to_string(player),
-          game: game
-        })
+    test "updates game in database when game has ended", %{conn: conn} do
+      {:ok, game} = App.create_game(%{ended: false, winner: "", draw: false})
+      create_41_moves(game)
+
+      conn = post(conn, Routes.game_api_path(conn, :create_ai_move, game.id))
+
+      moves = decode_json_data(conn)["moves"]
+      assert length(moves) == 42
+
+      %{
+        "x_coordinate" => x_coordinate,
+        "y_coordinate" => y_coordinate,
+        "id" => _,
+        "player" => player
+      } =
+        List.last(moves)
+
+      assert x_coordinate == 0
+      assert y_coordinate == 6
+      assert player == "two"
+      assert json_response(conn, 200)["data"]["ended"] == true
+      assert json_response(conn, 200)["data"]["draw"] == true
+      assert json_response(conn, 200)["data"]["winner"] == nil
+
+      updated_game = App.get_game!(game.id)
+
+      assert updated_game.ended == true
+    end
+  end
+
+  defp decode_json_data(conn) do
+    json_response(conn, 200)["data"]
+  end
+
+  defp create_move(game, x, y, player) do
+    {:ok, _} =
+      App.create_move(%{
+        x_coordinate: x,
+        y_coordinate: y,
+        player: Atom.to_string(player),
+        game: game
+      })
+  end
+
+  defp create_41_moves(game) do
+    for row <- 0..5 do
+      for column <- 0..5 do
+        create_move(game, row, column, :one)
+      end
     end
 
-    defp create_41_moves(game) do
-      for row <- 0..5 do
-        for column <- 0..5 do
-          create_move(game, row, column, :one)
-        end
-      end
-
-      for column <- 0..4 do
-        create_move(game, 6, column, :two)
-      end
+    for column <- 0..4 do
+      create_move(game, 6, column, :two)
     end
   end
 end

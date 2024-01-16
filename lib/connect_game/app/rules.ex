@@ -29,4 +29,10 @@ defmodule ConnectGame.App.Rules do
     {:ok, current_player} = ConnectFour.next_player_turn(Move.transform(moves))
     current_player
   end
+
+  def column_has_space?(moves, column_index, grid_height) do
+    moves
+    |> Enum.filter(fn move -> move.y_coordinate == column_index end)
+    |> length() < grid_height
+  end
 end

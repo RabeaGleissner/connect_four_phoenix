@@ -120,4 +120,26 @@ defmodule ConnectGame.RulesTest do
       assert current_player == :two
     end
   end
+
+  describe "Rules.column_has_space?" do
+    test "returns true if a column has space for more coins" do
+      has_space = Rules.column_has_space?([], 1, 2)
+
+      assert has_space
+    end
+
+    test "returns false if a column is full" do
+      game_id = 888
+
+      moves = [
+        %Move{id: 1, x_coordinate: 0, y_coordinate: 1, player: "one", game_id: game_id},
+        %Move{id: 2, x_coordinate: 0, y_coordinate: 0, player: "two", game_id: game_id},
+        %Move{id: 3, x_coordinate: 1, y_coordinate: 1, player: "two", game_id: game_id}
+      ]
+
+      has_space = Rules.column_has_space?(moves, 1, 2)
+
+      refute has_space
+    end
+  end
 end

@@ -4,6 +4,8 @@ defmodule ConnectGameWeb.GameApiController do
   alias ConnectGame.App
   alias ConnectGame.App.Rules
   alias ConnectGame.App.Game
+  alias ConnectGame.App.AiPlayer
+  alias ConnectGameWeb.Helpers.RandomNumber
 
   def show(conn, %{"id" => id}) do
     game = App.get_game_for_view!(id)
@@ -13,7 +15,21 @@ defmodule ConnectGameWeb.GameApiController do
 
   def create_move(conn, params) do
     %{"column" => column, "id" => id} = params
+    create_move(id, column, conn)
+  end
+
+  def create_ai_move(conn, params) do
+    %{"id" => id} = params
     game = App.get_game!(id)
+
+    column =
+      AiPlayer.choose_column(game.moves, Game.grid_height(), &RandomNumber.generate_between/2)
+
+    create_move(id, column, conn)
+  end
+
+  defp create_move(game_id, column, conn) do
+    game = App.get_game!(game_id)
 
     if game.ended do
       conn
@@ -48,7 +64,7 @@ defmodule ConnectGameWeb.GameApiController do
           true
       end
 
-      game = App.get_game_for_view!(id)
+      game = App.get_game_for_view!(game_id)
 
       render(conn, "show.json", game: game)
     end

@@ -27,6 +27,7 @@ defmodule ConnectGameWeb.Router do
 
     get "/games/:id", GameApiController, :show
     post "/games/:id/move", GameApiController, :create_move
+    post "/games/:id/ai-move", GameApiController, :create_ai_move
   end
 
   # Enables LiveDashboard only for development
