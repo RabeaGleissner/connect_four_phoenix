@@ -13,13 +13,13 @@ defmodule ConnectGameWeb.GameApiControllerTest do
       conn = get(conn, Routes.game_api_path(conn, :show, game.id))
 
       assert decode_json_data(conn)["id"] == game.id
-      assert decode_json_data(conn)["ended"] == false
       assert decode_json_data(conn)["winner"] == nil
       assert decode_json_data(conn)["grid_height"] == Game.grid_height()
       assert decode_json_data(conn)["grid_width"] == Game.grid_width()
       assert decode_json_data(conn)["connect_what"] == Game.connect_what()
-      assert decode_json_data(conn)["draw"] == false
       assert decode_json_data(conn)["current_player"] == "one"
+      refute decode_json_data(conn)["draw"]
+      refute decode_json_data(conn)["ended"]
     end
 
     test "with moves", %{conn: conn} do
@@ -44,9 +44,9 @@ defmodule ConnectGameWeb.GameApiControllerTest do
       conn = get(conn, Routes.game_api_path(conn, :show, game.id))
 
       assert decode_json_data(conn)["id"] == game.id
-      assert decode_json_data(conn)["ended"] == false
       assert decode_json_data(conn)["winner"] == nil
       assert decode_json_data(conn)["current_player"] == "one"
+      refute decode_json_data(conn)["ended"]
 
       returned_moves = decode_json_data(conn)["moves"]
       assert length(returned_moves) == 2
@@ -62,7 +62,7 @@ defmodule ConnectGameWeb.GameApiControllerTest do
 
       conn = post(conn, Routes.game_api_path(conn, :create_move, game.id), %{column: 0})
 
-      assert json_response(conn, 200)["data"]["ended"] == false
+      refute json_response(conn, 200)["data"]["ended"]
       assert json_response(conn, 200)["data"]["winner"] == nil
     end
 
@@ -78,12 +78,12 @@ defmodule ConnectGameWeb.GameApiControllerTest do
 
       conn = post(conn, Routes.game_api_path(conn, :create_move, game.id), %{column: 0})
 
-      assert json_response(conn, 200)["data"]["ended"] == true
-      assert json_response(conn, 200)["data"]["winner"] == "one"
+      assert decode_json_data(conn)["ended"]
+      assert decode_json_data(conn)["winner"] == "one"
 
       updated_game = App.get_game!(game.id)
 
-      assert updated_game.ended == true
+      assert updated_game.ended
       assert updated_game.winner == "one"
     end
 
@@ -94,9 +94,9 @@ defmodule ConnectGameWeb.GameApiControllerTest do
 
       conn = post(conn, Routes.game_api_path(conn, :create_move, game.id), %{column: 0})
 
-      assert json_response(conn, 200)["data"]["ended"] == true
-      assert json_response(conn, 200)["data"]["winner"] == nil
-      assert json_response(conn, 200)["data"]["draw"] == true
+      assert decode_json_data(conn)["ended"]
+      assert decode_json_data(conn)["winner"] == nil
+      assert decode_json_data(conn)["draw"]
 
       update_game = App.get_game!(game.id)
 
@@ -122,7 +122,7 @@ defmodule ConnectGameWeb.GameApiControllerTest do
       assert length(moves) == 1
       assert List.last(moves)["player"] == "one"
 
-      assert decode_json_data(conn)["ended"] == false
+      refute decode_json_data(conn)["ended"]
       assert decode_json_data(conn)["winner"] == nil
     end
 
@@ -146,13 +146,13 @@ defmodule ConnectGameWeb.GameApiControllerTest do
       assert x_coordinate == 0
       assert y_coordinate == 6
       assert player == "two"
-      assert json_response(conn, 200)["data"]["ended"] == true
-      assert json_response(conn, 200)["data"]["draw"] == true
-      assert json_response(conn, 200)["data"]["winner"] == nil
+      assert decode_json_data(conn)["ended"]
+      assert decode_json_data(conn)["draw"]
+      assert decode_json_data(conn)["winner"] == nil
 
       updated_game = App.get_game!(game.id)
 
-      assert updated_game.ended == true
+      assert updated_game.ended
     end
   end
 

@@ -45,7 +45,7 @@ defmodule ConnectGameWeb.GameControllerTest do
       assert redirected_to(conn) == Routes.game_path(conn, :show, id)
       new_game = App.get_game!(id)
 
-      assert new_game.ended == false
+      refute new_game.ended
       assert new_game.winner == nil
     end
   end
